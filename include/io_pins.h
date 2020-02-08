@@ -7,3 +7,5 @@
 #define PIN_LMIC_DIO0 5
 #define PIN_LMIC_DIO1 6
 #define PIN_LMIC_DIO2 7
+
+#define PIN_ENABLE_SD011 5

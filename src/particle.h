@@ -8,5 +8,6 @@ void ParticleSetup(void);
 void ParticleRead(bool wakeup,bool sleep);
 void ParticleSleep(void);
 void ParticleWakeup(bool wait);
+void ParticlePower(bool power);
 
 #endif
