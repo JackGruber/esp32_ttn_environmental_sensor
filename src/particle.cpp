@@ -8,7 +8,7 @@ SdsDustSensor sds(SDS011_SERIAL);
 
 void ParticleSetup(void)
 {
-  delay(500);
+  delay(600);
 
   sds.begin();
   sds.setQueryReportingMode(); // ensures sensor is in 'query' reporting mode  
@@ -75,6 +75,6 @@ void ParticlePower(bool power)
     digitalWrite(PIN_ENABLE_SD011, power);
     if(power == true)
     {
-      delay(500);
+      delay(600);
     }
 }
