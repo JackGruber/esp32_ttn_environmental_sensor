@@ -2,6 +2,7 @@
 #include "SdsDustSensor.h"
 #include <settings.h>
 #include <io_pins.h>
+#include <power.h>
 
 SdsDustSensor sds(SDS011_SERIAL);
 
@@ -21,7 +22,7 @@ void ParticleSetup(void)
 
 void ParticleRead(bool wakeup = true,bool sleep = false)
 {
-  // Wakeup and wait 30 sec
+  // Wakeup and wait
   if(wakeup == true)
   {
      ParticleWakeup(true);
@@ -66,7 +67,7 @@ void ParticleWakeup(bool wait = true)
   
   if(wait == true)
   {
-    delay(30000);
+    PowerLightSleepTimer(30);
   }
 }
 
