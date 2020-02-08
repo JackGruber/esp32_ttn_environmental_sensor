@@ -1,8 +1,10 @@
 #include "particle.h"
 #include "SdsDustSensor.h"
+#include <settings.h>
 #include <io_pins.h>
 
-SdsDustSensor sds(PIN_SDS011_RX, PIN_SDS011_TX);
+SdsDustSensor sds(SDS011_SERIAL);
+
 
 void ParticleSetup(void)
 {
