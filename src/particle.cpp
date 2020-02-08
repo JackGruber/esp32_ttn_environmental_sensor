@@ -73,4 +73,8 @@ void ParticleWakeup(bool wait = true)
 void ParticlePower(bool power)
 {
     digitalWrite(PIN_ENABLE_SD011, power);
+    if(power == true)
+    {
+      delay(500);
+    }
 }
