@@ -222,9 +222,8 @@ void LoraWANDo(void)
 
 void LoraWANGetData()
 {
-    //uint8_t  vcc = ( ReadVcc() / 10) - 200;
-       
-    //LORA_DATA[0] = vcc;
+    uint8_t vcc = ( ReadVBat() / 10) - 200;
+    LORA_DATA[0] = vcc;
 }
 
 void LoraWANSaveOTTA2RTC()
