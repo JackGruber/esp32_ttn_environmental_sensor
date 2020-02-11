@@ -20,7 +20,7 @@ void ParticleSetup(void)
   Serial.println(sds.queryWorkingPeriod().toString()); 
 }
 
-void ParticleRead(bool wakeup = true,bool sleep = false)
+void ParticleRead(bool wakeup, bool sleep, float& pm25, float& pm10)
 {
   // Wakeup and wait
   if(wakeup == true)
@@ -33,7 +33,9 @@ void ParticleRead(bool wakeup = true,bool sleep = false)
   {
     Serial.print("PM2.5 = ");
     Serial.print(pm.pm25);
+    pm25 = pm.pm25;
     Serial.print(", PM10 = ");
+    pm10 = pm.pm10;
     Serial.println(pm.pm10);
   } 
   else 
