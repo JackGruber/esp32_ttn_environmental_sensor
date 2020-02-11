@@ -5,6 +5,8 @@
 #include "io_pins.h"
 #include "functions.h"
 #include <power.h>
+#include <particle.h>
+#include <global.h>
 
 // Pin mapping
 const lmic_pinmap lmic_pins = {
@@ -14,7 +16,12 @@ const lmic_pinmap lmic_pins = {
     .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2 },
 };
 
-static uint8_t LORA_DATA[1];
+// 1 = VBat
+// 2 = PM2.5
+// 3 = PM2.5
+// 4 = PM10
+// 5 = PM10
+static uint8_t LORA_DATA[5];
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
 const unsigned TX_INTERVAL = LORA_TX_INTERVAL;
@@ -224,6 +231,30 @@ void LoraWANGetData()
 {
     uint8_t vcc = ( ReadVBat() / 10) - 200;
     LORA_DATA[0] = vcc;
+
+    int16_t temp = (PM25 * 10);
+    if ( isnan(PM25) )
+    { 
+      LORA_DATA[1] = 255;    
+      LORA_DATA[2] = 255;
+    }
+    else 
+    { 
+      LORA_DATA[1] = temp >> 8;
+      LORA_DATA[2] = temp & 0xFF;
+    }
+
+    temp = (PM10 * 10);
+    if ( isnan(PM10) )
+    { 
+      LORA_DATA[3] = 255;    
+      LORA_DATA[4] = 255;
+    }
+    else 
+    { 
+      LORA_DATA[3] = temp >> 8;
+      LORA_DATA[4] = temp & 0xFF;
+    }
 }
 
 void LoraWANSaveOTTA2RTC()
