@@ -6,3 +6,4 @@
 #define PIN_LMIC_DIO2 21
 
 #define PIN_ENABLE_SD011 5
+#define PIN_VBAT 27

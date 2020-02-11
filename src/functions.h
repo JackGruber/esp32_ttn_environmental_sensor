@@ -6,5 +6,6 @@
 
 void PrintResetReason(void);
 void SetupPins();
+long ReadVcc();
 
 #endif

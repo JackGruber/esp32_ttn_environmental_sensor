@@ -30,4 +30,12 @@ void PrintResetReason()
 void SetupPins()
 {
     pinMode(PIN_ENABLE_SD011, OUTPUT);
+    pinMode(PIN_VBAT, INPUT);
+}
+
+long ReadVBat()
+{
+    long vcc = analogRead(PIN_VBAT);
+    vcc = 4.2 / 4096 * vcc * 1000;
+    return vcc; // Vcc in millivolts
 }
