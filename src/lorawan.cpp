@@ -219,7 +219,7 @@ void LoraWANDo(void)
         Serial.println(F("Go to DeepSleep ..."));
         LoraWANSaveOTTA2RTC();
         Serial.flush();
-        PowerDeepSleepTimer(30);
+        PowerDeepSleepTimer(LORA_TX_INTERVAL - 30);
     }
     else
     {
