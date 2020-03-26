@@ -36,6 +36,6 @@ void SetupPins()
 long ReadVBat()
 {
     long vcc = analogRead(PIN_VBAT);
-    vcc = 4.2 / 4096 * vcc * 1000;
+    vcc = 4.2 / 4095 * vcc * 1000;
     return vcc; // Vcc in millivolts
 }
