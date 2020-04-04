@@ -8,11 +8,14 @@
 
 void setup() {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // Disable Brownout Detector
+    
     Serial.begin(115200);
     Serial.println(F("Starting environment sensor ..."));
-
+    
     PrintResetReason();
+    
     SetupPins();
+
     // Setup SD011 and read values
     ParticlePower(true);
     ParticleSetup();
