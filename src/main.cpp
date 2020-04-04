@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <particle.h>
+#include <lorawan.h>
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 
@@ -14,10 +15,11 @@ void setup() {
     ParticleSetup();
     ParticleRead(true, true, PM25, PM10);
     ParticlePower(false);
+    
+    LoRaWANSetup();
 }
 
 void loop() {
-    Serial.println("Read");
-    ParticleRead(true, true);
-    delay(30000);
+    LoraWANDo();
+    delay(10);
 }
