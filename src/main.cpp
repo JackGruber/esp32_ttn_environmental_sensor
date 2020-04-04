@@ -9,7 +9,11 @@ void setup() {
     Serial.println(F("Starting environment sensor ..."));
 
     SetupPins();
+    // Setup SD011 and read values
+    ParticlePower(true);
     ParticleSetup();
+    ParticleRead(true, true, PM25, PM10);
+    ParticlePower(false);
 }
 
 void loop() {
