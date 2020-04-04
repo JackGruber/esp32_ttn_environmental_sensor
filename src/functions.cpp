@@ -1,6 +1,8 @@
 #include "functions.h"
 #include <rom/rtc.h>
 #include <io_pins.h>
+#include <driver/adc.h>
+#include <settings.h>
 
 void PrintResetReason()
 {
@@ -35,11 +37,43 @@ void SetupPins()
 
 long ReadVBat()
 {
-  Serial.print("ReadVBat: Value: ");
-  long vcc = analogRead(PIN_VBAT);
-  Serial.print(vcc);
-  vcc = 4.2 / 4095 * vcc * 1000;
-  Serial.print(" mV: ");
-  Serial.println(vcc);
-  return vcc; // Vcc in millivolts
+  Serial.print("ReadVBat = ");
+  long vccraw = 0;
+  long vcc = 0;
+  int read_raw;
+  int smaples_ok = 0;
+  long vbat = 0;
+  long raw = 0;
+
+  for(int smaples=1;smaples<=50;smaples++)
+  {
+    adc2_config_channel_atten( ADC2_CHANNEL_7, ADC_ATTEN_0db );
+    esp_err_t r = adc2_get_raw( ADC2_CHANNEL_7, ADC_WIDTH_12Bit, &read_raw);
+    if ( r == ESP_OK ) 
+    {
+      smaples_ok ++;
+      raw += read_raw;
+      delay(10);
+    } 
+    else if ( r == ESP_ERR_TIMEOUT ) 
+    {
+      Serial.println("ADC2 used by Wi-Fi.");
+    }
+  }
+  if(smaples_ok > 0) 
+  {
+    vccraw = ( (1.1 / 4095) * raw * 1000) / smaples_ok;
+    vcc = vccraw * ((float) REF_U2_DIVIDER / (float) REF_VCCRAW_ESP32);
+    vbat = vcc * ((float) REF_VBAT / (float) REF_U2_DIVIDER);   
+    Serial.print("VCCraw: ");
+    Serial.print(vccraw);
+    Serial.print(" mV, VCC: ");
+    Serial.print(vcc);
+    Serial.print(" mV, vBat: ");
+    Serial.print(vbat);
+    Serial.println(" mV");
+
+    return vbat; // vbat in millivolts
+  }
+  else return 0;
 }
