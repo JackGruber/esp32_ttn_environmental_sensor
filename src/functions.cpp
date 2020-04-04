@@ -35,7 +35,11 @@ void SetupPins()
 
 long ReadVBat()
 {
+  Serial.print("ReadVBat: Value: ");
   long vcc = analogRead(PIN_VBAT);
+  Serial.print(vcc);
   vcc = 4.2 / 4095 * vcc * 1000;
+  Serial.print(" mV: ");
+  Serial.println(vcc);
   return vcc; // Vcc in millivolts
 }
