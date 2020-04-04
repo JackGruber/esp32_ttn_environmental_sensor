@@ -10,6 +10,7 @@ void setup() {
     Serial.begin(115200);
     Serial.println(F("Starting environment sensor ..."));
 
+    PrintResetReason();
     SetupPins();
     // Setup SD011 and read values
     ParticlePower(true);
