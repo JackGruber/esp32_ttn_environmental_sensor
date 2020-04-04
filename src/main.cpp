@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <particle.h>
 #include <lorawan.h>
+#include <functions.h>
 #include <global.h>
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
