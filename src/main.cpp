@@ -8,6 +8,7 @@ void setup() {
     Serial.begin(115200);
     Serial.println(F("Starting environment sensor ..."));
 
+    SetupPins();
     ParticleSetup();
 }
 
