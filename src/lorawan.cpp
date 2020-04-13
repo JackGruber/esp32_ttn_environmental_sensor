@@ -67,7 +67,7 @@ void LoRaWANSetup()
 
     if(RTC_LORAWAN_seqnoUp != 0)
     {
-        LoraWANLoadOTTAFromRTC();
+        LoraWANLoadLMICFromRTC();
     }
 
     // Start job
@@ -217,7 +217,7 @@ void LoraWANDo(void)
     if(GO_DEEP_SLEEP == true)
     {
         Serial.println(F("Go to DeepSleep ..."));
-        LoraWANSaveOTTA2RTC();
+        LoraWANSaveLMICToRTC();
         Serial.flush();
         PowerDeepSleepTimer(LORA_TX_INTERVAL - 30);
     }
@@ -257,7 +257,7 @@ void LoraWANGetData()
     }
 }
 
-void LoraWANSaveOTTA2RTC()
+void LoraWANSaveLMICToRTC()
 {
     Serial.println(F("Save LMIC to RTC ..."));
     RTC_LORAWAN_netid = LMIC.netid;
@@ -277,7 +277,7 @@ void LoraWANSaveOTTA2RTC()
     RTC_LORAWAN_channelMap = LMIC.channelMap;
 }
 
-void LoraWANLoadOTTAFromRTC()
+void LoraWANLoadLMICFromRTC()
 {
     Serial.println(F("Load LMIC from RTC ..."));
 

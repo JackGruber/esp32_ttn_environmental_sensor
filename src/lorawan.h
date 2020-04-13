@@ -47,8 +47,8 @@ void LoRaWANSetup(void);
 void LoraWANDo_send(osjob_t* j);
 void LoraWANDo(void);
 void LoraWANGetData(void);
-void LoraWANSaveOTTA2RTC(void);
-void LoraWANLoadOTTAFromRTC(void);
+void LoraWANSaveLMICToRTC(void);
+void LoraWANLoadLMICFromRTC(void);
 void LoraWANCopyLmic(struct lmic_t* source, struct lmic_t* destination);
 
 #endif
