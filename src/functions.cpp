@@ -63,12 +63,9 @@ long ReadVBat()
   if(smaples_ok > 0) 
   {
     vccraw = ( (1.1 / 4095) * raw * 1000) / smaples_ok;
-    vcc = vccraw * ((float) REF_U2_DIVIDER / (float) REF_VCCRAW_ESP32);
-    vbat = vcc * ((float) REF_VBAT / (float) REF_U2_DIVIDER);   
+    vbat = vccraw * ((float) REF_VBAT / (float) REF_VCCRAW_ESP32);   
     Serial.print("VCCraw: ");
     Serial.print(vccraw);
-    Serial.print(" mV, VCC: ");
-    Serial.print(vcc);
     Serial.print(" mV, vBat: ");
     Serial.print(vbat);
     Serial.println(" mV");
