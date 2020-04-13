@@ -270,31 +270,38 @@ void LoraWANSaveLMICToRTC()
     memcpy(RTC_LORAWAN_nwkKey, LMIC.nwkKey, 16);
     memcpy(RTC_LORAWAN_artKey, LMIC.artKey, 16);
     RTC_LORAWAN_dn2Dr = LMIC.dn2Dr;
+    RTC_LORAWAN_dnConf = LMIC.dnConf;
     RTC_LORAWAN_seqnoDn = LMIC.seqnoDn;
     RTC_LORAWAN_seqnoUp = LMIC.seqnoUp;
     RTC_LORAWAN_adrTxPow = LMIC.adrTxPow;
     RTC_LORAWAN_datarate = LMIC.datarate;
+    RTC_LORAWAN_txChnl = LMIC.txChnl;    
     RTC_LORAWAN_adrAckReq = LMIC.adrAckReq;
     RTC_LORAWAN_rx1DrOffset = LMIC.rx1DrOffset;
     RTC_LORAWAN_rxDelay = LMIC.rxDelay;
-    memcpy(LMIC.channelFreq, RTC_LORAWAN_channelFreq, MAX_CHANNELS);
-    memcpy(LMIC.channelDrMap, RTC_LORAWAN_channelDrMap, MAX_CHANNELS);
+    memcpy(RTC_LORAWAN_channelFreq, LMIC.channelFreq, MAX_CHANNELS*sizeof(u4_t));
+    memcpy(RTC_LORAWAN_channelDrMap, LMIC.channelDrMap, MAX_CHANNELS*sizeof(u2_t));
+    memcpy(RTC_LORAWAN_channelDlFreq, LMIC.channelDlFreq, MAX_CHANNELS*sizeof(u4_t));
+    memcpy(RTC_LORAWAN_bands, LMIC.bands, MAX_BANDS*sizeof(band_t));
     RTC_LORAWAN_channelMap = LMIC.channelMap;
 }
 
 void LoraWANLoadLMICFromRTC()
 {
-    Serial.println(F("Load LMIC from RTC ..."));
-
-    memcpy(RTC_LORAWAN_channelFreq, LMIC.channelFreq, MAX_CHANNELS);
-    memcpy(RTC_LORAWAN_channelDrMap, LMIC.channelDrMap, MAX_CHANNELS);
-    LMIC.channelMap = RTC_LORAWAN_channelMap;
-    LMIC.seqnoDn = RTC_LORAWAN_seqnoDn;    
+    Serial.println(F("Load LMIC vars from RTC ..."));
     LMIC_setSession(RTC_LORAWAN_netid, RTC_LORAWAN_devaddr, RTC_LORAWAN_nwkKey, RTC_LORAWAN_artKey);
+    LMIC.dn2Dr = RTC_LORAWAN_dn2Dr;
+    LMIC.dnConf = RTC_LORAWAN_dnConf;
+    LMIC.seqnoDn = RTC_LORAWAN_seqnoDn;
     LMIC_setSeqnoUp(RTC_LORAWAN_seqnoUp);
     LMIC_setDrTxpow(RTC_LORAWAN_datarate, RTC_LORAWAN_adrTxPow);
+    LMIC.txChnl = RTC_LORAWAN_txChnl;
     LMIC.adrAckReq = RTC_LORAWAN_adrAckReq;
-    LMIC.dn2Dr = RTC_LORAWAN_dn2Dr;
     LMIC.rx1DrOffset = RTC_LORAWAN_rx1DrOffset;
     LMIC.rxDelay = RTC_LORAWAN_rxDelay;
+    memcpy(LMIC.channelFreq, RTC_LORAWAN_channelFreq, MAX_CHANNELS*sizeof(u4_t));
+    memcpy(LMIC.channelDrMap, RTC_LORAWAN_channelDrMap, MAX_CHANNELS*sizeof(u2_t));
+    memcpy(LMIC.channelDlFreq, RTC_LORAWAN_channelDlFreq, MAX_CHANNELS*sizeof(u4_t));
+    memcpy(LMIC.bands, RTC_LORAWAN_bands, MAX_BANDS*sizeof(band_t));    
+    LMIC.channelMap = RTC_LORAWAN_channelMap;
 }
