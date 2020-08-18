@@ -219,7 +219,7 @@ void onEvent (ev_t ev) {
 
 void LoraWANDo(void)
 {
-    if(GO_DEEP_SLEEP == true)
+    if(GO_DEEP_SLEEP == true AND !os_queryTimeCriticalJobs(ms2osticksRound( (seconds*1000) - 1000 )))
     {
         Serial.println(F("Go to DeepSleep ..."));
         LoraWANSaveLMICToRTC();
