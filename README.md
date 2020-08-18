@@ -30,3 +30,17 @@ The charging LED lights up as soon as the solarpannel supplies some current. How
 To prevent this, I have soldered out the charging LED.
 
 <img src="img/TP4056_board_led.jpg">
+
+## Battery levels overview (Measuring and data send interval every 5 minutes)
+
+### No charge current  
+
+<img src="img/power_no_solar.jpg">
+
+`1` = Disconnect solar pannel, `2` = Last data packet sent
+
+### Normal operation
+
+<img src="img/power_operation.jpg">
+
+`1` = First data packet sent after after approx. 6 houre of charge, `2` = Rainy days
