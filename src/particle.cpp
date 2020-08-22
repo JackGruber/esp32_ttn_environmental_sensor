@@ -6,30 +6,29 @@
 
 SdsDustSensor sds(SDS011_SERIAL);
 
-
 void ParticleSetup(void)
 {
   delay(600);
 
   sds.begin();
-  sds.setQueryReportingMode(); // ensures sensor is in 'query' reporting mode  
-  
+  sds.setQueryReportingMode(); // ensures sensor is in 'query' reporting mode
+
   Serial.println(sds.queryFirmwareVersion().toString());
-  Serial.println(sds.queryReportingMode().toString()); 
-  Serial.println(sds.queryWorkingState().toString()); 
-  Serial.println(sds.queryWorkingPeriod().toString()); 
+  Serial.println(sds.queryReportingMode().toString());
+  Serial.println(sds.queryWorkingState().toString());
+  Serial.println(sds.queryWorkingPeriod().toString());
 }
 
-void ParticleRead(bool wakeup, bool sleep, float& pm25, float& pm10)
+void ParticleRead(bool wakeup, bool sleep, float &pm25, float &pm10)
 {
   // Wakeup and wait
-  if(wakeup == true)
+  if (wakeup == true)
   {
-     ParticleWakeup(true);
+    ParticleWakeup(true);
   }
 
   PmResult pm = sds.queryPm();
-  if (pm.isOk()) 
+  if (pm.isOk())
   {
     Serial.print("PM2.5 = ");
     Serial.print(pm.pm25);
@@ -37,14 +36,14 @@ void ParticleRead(bool wakeup, bool sleep, float& pm25, float& pm10)
     Serial.print(", PM10 = ");
     pm10 = pm.pm10;
     Serial.println(pm.pm10);
-  } 
-  else 
+  }
+  else
   {
     Serial.print("Could not read values from sensor, reason: ");
     Serial.println(pm.statusToString());
   }
 
-  if(sleep == true)
+  if (sleep == true)
   {
     ParticleSleep();
   }
@@ -53,11 +52,11 @@ void ParticleRead(bool wakeup, bool sleep, float& pm25, float& pm10)
 void ParticleSleep(void)
 {
   WorkingStateResult state = sds.sleep();
-  if (state.isWorking()) 
+  if (state.isWorking())
   {
     Serial.println("Problem with sleeping the sensor.");
-  } 
-  else 
+  }
+  else
   {
     Serial.println("Sensor is sleeping");
   }
@@ -66,8 +65,8 @@ void ParticleSleep(void)
 void ParticleWakeup(bool wait = true)
 {
   sds.wakeup();
-  
-  if(wait == true)
+
+  if (wait == true)
   {
     PowerLightSleepTimer(30);
   }
@@ -75,9 +74,9 @@ void ParticleWakeup(bool wait = true)
 
 void ParticlePower(bool power)
 {
-    digitalWrite(PIN_ENABLE_SD011, power);
-    if(power == true)
-    {
-      delay(600);
-    }
+  digitalWrite(PIN_ENABLE_SD011, power);
+  if (power == true)
+  {
+    delay(600);
+  }
 }

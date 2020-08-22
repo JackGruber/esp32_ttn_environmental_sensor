@@ -5,7 +5,7 @@
 #include <Arduino.h>
 
 void ParticleSetup(void);
-void ParticleRead(bool wakeup, bool sleep, float& pm25, float& pm10);
+void ParticleRead(bool wakeup, bool sleep, float &pm25, float &pm10);
 void ParticleSleep(void);
 void ParticleWakeup(bool wait);
 void ParticlePower(bool power);

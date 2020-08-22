@@ -10,10 +10,10 @@
 // first. When copying an EUI from ttnctl output, this means to reverse
 // the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
 // 0x70.
-static const u1_t PROGMEM APPEUI[8]=TTN_APPEUI;
+static const u1_t PROGMEM APPEUI[8] = TTN_APPEUI;
 
 // This should also be in little endian format, see above.
-static const u1_t PROGMEM DEVEUI[8]=TTN_DEVEUI;
+static const u1_t PROGMEM DEVEUI[8] = TTN_DEVEUI;
 
 // This key should be in big endian format (or, since it is not really a
 // number but a block of memory, endianness does not really apply). In
@@ -43,17 +43,16 @@ extern RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
 extern RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
 extern RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
 
-
-void os_getArtEui (u1_t* buf);
-void os_getDevEui (u1_t* buf);
-void os_getDevKey (u1_t* buf);
+void os_getArtEui(u1_t *buf);
+void os_getDevEui(u1_t *buf);
+void os_getDevKey(u1_t *buf);
 
 void LoRaWANSetup(void);
-void LoraWANDo_send(osjob_t* j);
+void LoraWANDo_send(osjob_t *j);
 void LoraWANDo(void);
 void LoraWANGetData(void);
 void LoraWANSaveLMICToRTC(void);
 void LoraWANLoadLMICFromRTC(void);
-void LoraWANCopyLmic(struct lmic_t* source, struct lmic_t* destination);
+void LoraWANCopyLmic(struct lmic_t *source, struct lmic_t *destination);
 
 #endif
