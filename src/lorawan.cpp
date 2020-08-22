@@ -17,12 +17,7 @@ const lmic_pinmap lmic_pins = {
     .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2 },
 };
 
-// 1 = VBat
-// 2 = PM2.5
-// 3 = PM2.5
-// 4 = PM10
-// 5 = PM10
-static uint8_t LORA_DATA[5];
+static uint8_t LORA_DATA[11];
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
 const unsigned TX_INTERVAL = LORA_TX_INTERVAL;
