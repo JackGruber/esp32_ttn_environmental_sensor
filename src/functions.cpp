@@ -70,7 +70,6 @@ long ReadVBat()
 {
   Serial.print("ReadVBat = ");
   long vccraw = 0;
-  long vcc = 0;
   int read_raw;
   int smaples_ok = 0;
   long vbat = 0;
