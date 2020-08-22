@@ -228,33 +228,57 @@ void LoraWANDo(void)
     }
 }
 
+/*
+    Byte 1: VCC
+    Byte 2: PM25
+    Byte 3: PM25
+    Byte 4: PM10
+    Byte 5: PM10
+    Byte 6: Temperature
+    Byte 7: Temperature
+    Byte 8: Humidity
+    Byte 9: Pressure
+    Byte 10: Pressure
+    Byte 11: Pressure (first Bit), the remaining not used
+*/
 void LoraWANGetData()
 {
-    uint8_t vcc = ( ReadVBat() / 10) - 200;
-    LORA_DATA[0] = vcc;
+    uint8_t tmp_u8;
+    uint16_t tmp_u16;
+    uint32_t tmp_u32;
+    float tmp_float;
+    
+    // VCC
+    /**************************************************************************/
+    tmp_u8 = ( ReadVBat() / 10) - 200;
+    LORA_DATA[0] = tmp_u8;
 
-    int16_t temp = (PM25 * 10);
+    // PM10
+    /**************************************************************************/
+    tmp_u16 = (PM25 * 10);
     if ( isnan(PM25) )
     { 
-      LORA_DATA[1] = 255;    
-      LORA_DATA[2] = 255;
+        LORA_DATA[1] = 255;    
+        LORA_DATA[2] = 255;
     }
     else 
     { 
-      LORA_DATA[1] = temp >> 8;
-      LORA_DATA[2] = temp & 0xFF;
+        LORA_DATA[1] = tmp_u16 >> 8;
+        LORA_DATA[2] = tmp_u16 & 0xFF;
     }
 
-    temp = (PM10 * 10);
+    // PM10
+    /**************************************************************************/
+    tmp_u16 = (PM10 * 10);
     if ( isnan(PM10) )
     { 
-      LORA_DATA[3] = 255;    
-      LORA_DATA[4] = 255;
+        LORA_DATA[3] = 255;    
+        LORA_DATA[4] = 255;
     }
     else 
     { 
-      LORA_DATA[3] = temp >> 8;
-      LORA_DATA[4] = temp & 0xFF;
+        LORA_DATA[3] = tmp_u16 >> 8;
+        LORA_DATA[4] = tmp_u16 & 0xFF;
     }
 
     // Temperature
