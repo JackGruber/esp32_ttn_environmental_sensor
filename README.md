@@ -53,14 +53,14 @@ function Decoder(bytes, port) {
   
   decoded.vcc = (bytes[0] + 200)/100;
 
-  if(bytes[1] != 255 || bytes[2] != 255) 
+  if(bytes[1] != 255 || bytes[2] != 255)
   {
-    decoded.pm25 = ((bytes[1]<<24>>16 | bytes[2]) / 10);
+    decoded.pm25 = ((bytes[1] << (8*1) | bytes[2] << (8*0)) / 10);
   }
 
-  if(bytes[3] != 255 || bytes[4] != 255) 
+  if(bytes[3] != 255 || bytes[4] != 255)
   {
-    decoded.pm10 = ((bytes[3]<<24>>16 | bytes[4]) / 10);
+    decoded.pm10 = ((bytes[3] << (8*1) | bytes[4] << (8*0)) / 10);
   }
   
   decoded.temperature = ((bytes[5]<<24>>16 | bytes[6]) / 10);
