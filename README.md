@@ -14,7 +14,7 @@ battery/solar powerd ESP32 to measure temperature, humidity, air pressure and fi
 * 1x 18650 battery holder
 * 1x 5V DC-DC boost converter module
 * 1x RFM95 module
-* 1x BMP280 sensor
+* 1x BME280 sensor
 * 1x SDS011 module
 * 1x IRL3103PBF
 * ...
