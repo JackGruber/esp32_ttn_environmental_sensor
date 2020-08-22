@@ -7,6 +7,7 @@
 #include "soc/rtc_cntl_reg.h"
 #include "version.h"
 #include "version_build.h"
+#include "bme280.h"
 
 void setup() {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // Disable Brownout Detector
@@ -20,6 +21,10 @@ void setup() {
     
     SetupPins();
 
+    // Setup BME280 and print values
+    BME280Setup();
+    BME280PrintValues();
+
     // Setup SD011 and read values
     ParticlePower(true);
     ParticleSetup();
@@ -28,6 +33,8 @@ void setup() {
     
     LoRaWANSetup();
 }
+
+
 
 void loop() {
     LoraWANDo();
