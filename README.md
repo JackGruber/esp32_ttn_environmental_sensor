@@ -44,3 +44,25 @@ To prevent this, I have soldered out the charging LED.
 <img src="img/power_operation.jpg">
 
 `1` = First data packet sent after after approx. 6 houre of charge, `2` = Rainy days
+
+## TTN payload decoder
+
+```javascript
+function Decoder(bytes, port) {
+  var decoded = {};
+  
+  decoded.vcc = (bytes[0] + 200)/100;
+
+  if(bytes[1] != 255 || bytes[2] != 255) 
+  {
+    decoded.pm25 = ((bytes[1]<<24>>16 | bytes[2]) / 10);
+  }
+
+  if(bytes[3] != 255 || bytes[4] != 255) 
+  {
+    decoded.pm10 = ((bytes[3]<<24>>16 | bytes[4]) / 10);
+  }
+  
+  return decoded;
+}
+```
