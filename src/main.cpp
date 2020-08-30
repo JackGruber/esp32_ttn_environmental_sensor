@@ -8,6 +8,7 @@
 #include "version.h"
 #include "version_build.h"
 #include "bme280.h"
+#include "esp32-hal-cpu.h"
 
 void setup()
 {
@@ -19,6 +20,11 @@ void setup()
     Serial.println("Builddate: " BUILD_DATE " " BUILD_TIME);
 
     PrintResetReason();
+
+    setCpuFrequencyMhz(10);
+    Serial.print("CPU Speed: ");
+    Serial.print(getCpuFrequencyMhz());
+    Serial.print(" MHz");
 
     SetupPins();
 
