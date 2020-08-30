@@ -28,6 +28,8 @@ void setup()
 
     SetupPins();
 
+    ReadVBat();
+
     // Setup BME280 and print values
     BME280Setup();
     BME280PrintValues();
