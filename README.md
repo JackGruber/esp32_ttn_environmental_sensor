@@ -31,15 +31,23 @@ To prevent this, I have soldered out the charging LED.
 
 <img src="img/TP4056_board_led.jpg">
 
-## Battery levels overview (Measuring and data send interval every 5 minutes)
+## Power consumption
 
-### No charge current  
+| Mode | Power consumption |
+| ---- | ----------------- |
+| SDS011 measurement (30 sec) | 175 mA |
+| LoRa activity | 7 mA |
+| DeepSleep | 52 uA |
+
+### Battery levels overview (Measuring and data send interval every 5 minutes)
+
+#### No charge current  
 
 <img src="img/power_no_solar.jpg">
 
 `1` = Disconnect solar pannel, `2` = Last data packet sent
 
-### Normal operation
+#### Normal operation
 
 <img src="img/power_operation.jpg">
 
