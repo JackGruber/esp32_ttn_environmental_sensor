@@ -24,7 +24,7 @@ void setup()
     setCpuFrequencyMhz(10);
     Serial.print("CPU Speed: ");
     Serial.print(getCpuFrequencyMhz());
-    Serial.print(" MHz");
+    Serial.println(" MHz");
 
     SetupPins();
 
