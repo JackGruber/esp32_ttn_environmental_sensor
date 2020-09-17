@@ -47,6 +47,7 @@ RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
 RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
 RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
 RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
+RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
 
 void LoRaWANSetup()
 {
@@ -334,6 +335,7 @@ void LoraWANSaveLMICToRTC()
     RTC_LORAWAN_adrAckReq = LMIC.adrAckReq;
     RTC_LORAWAN_rx1DrOffset = LMIC.rx1DrOffset;
     RTC_LORAWAN_rxDelay = LMIC.rxDelay;
+    RTC_LORAWAN_opmode = LMIC.opmode;
     memcpy(RTC_LORAWAN_channelFreq, LMIC.channelFreq, MAX_CHANNELS * sizeof(u4_t));
     memcpy(RTC_LORAWAN_channelDrMap, LMIC.channelDrMap, MAX_CHANNELS * sizeof(u2_t));
     memcpy(RTC_LORAWAN_channelDlFreq, LMIC.channelDlFreq, MAX_CHANNELS * sizeof(u4_t));
@@ -354,6 +356,7 @@ void LoraWANLoadLMICFromRTC()
     LMIC.adrAckReq = RTC_LORAWAN_adrAckReq;
     LMIC.rx1DrOffset = RTC_LORAWAN_rx1DrOffset;
     LMIC.rxDelay = RTC_LORAWAN_rxDelay;
+    LMIC.opmode = RTC_LORAWAN_opmode;
     memcpy(LMIC.channelFreq, RTC_LORAWAN_channelFreq, MAX_CHANNELS * sizeof(u4_t));
     memcpy(LMIC.channelDrMap, RTC_LORAWAN_channelDrMap, MAX_CHANNELS * sizeof(u2_t));
     memcpy(LMIC.channelDlFreq, RTC_LORAWAN_channelDlFreq, MAX_CHANNELS * sizeof(u4_t));

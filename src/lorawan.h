@@ -42,6 +42,7 @@ extern RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
 extern RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
 extern RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
 extern RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
+extern RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
 
 void os_getArtEui(u1_t *buf);
 void os_getDevEui(u1_t *buf);
