@@ -221,17 +221,31 @@ void onEvent(ev_t ev)
 
 void LoraWANDo(void)
 {
+    static int loop_count = 0;
+    long seconds = millis() / 1000;
     if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000) - 1000)))
     {
         Serial.println(F("Go to DeepSleep ..."));
+        Serial.print(F("Runtime was: "));
+        Serial.print(seconds);
+        Serial.println(F(" seconds"));
         LoraWANSaveLMICToRTC();
         Serial.flush();
         PowerDeepSleepTimer(LORA_TX_INTERVAL - 30);
     }
     else
     {
+        if(loop_count % 10000 == 0) { Serial.println("Cannot Sleep"); }
+        if(loop_count % 50000 == 0) 
+        { 
+            Serial.print("Runtime: ");
+            Serial.print(seconds);
+            Serial.println(" seconds");
+        }
+
         os_runloop_once();
     }
+    loop_count ++;
 }
 
 /*
