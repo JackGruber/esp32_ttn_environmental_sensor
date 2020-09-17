@@ -47,6 +47,7 @@ RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
 RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
 RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
 RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
+RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
 
 void LoRaWANSetup()
 {
@@ -67,6 +68,7 @@ void LoRaWANSetup()
     if (RTC_LORAWAN_seqnoUp != 0)
     {
         LoraWANLoadLMICFromRTC();
+        LMICbandplan_joinAcceptChannelClear();
     }
 
     // Start job
@@ -76,12 +78,11 @@ void LoRaWANSetup()
 void LoraWANDo_send(osjob_t *j)
 {
     // Check if there is not a current TX/RX job running
-    if (LMIC.opmode & OP_TXRXPEND)
-    {
+    if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
-    }
-    else
-    {
+    } else if (LMIC.opmode & OP_TXDATA) {
+        Serial.println(F("OP_TXDATA, not sending"));
+    } else {
         LoraWANGetData();
 
         // Prepare upstream data transmission at the next possible time.
@@ -219,17 +220,31 @@ void onEvent(ev_t ev)
 
 void LoraWANDo(void)
 {
+    static int loop_count = 0;
+    long seconds = millis() / 1000;
     if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000) - 1000)))
     {
         Serial.println(F("Go to DeepSleep ..."));
+        Serial.print(F("Runtime was: "));
+        Serial.print(seconds);
+        Serial.println(F(" seconds"));
         LoraWANSaveLMICToRTC();
         Serial.flush();
         PowerDeepSleepTimer(LORA_TX_INTERVAL - 30);
     }
     else
     {
+        if(loop_count % 10000 == 0) { Serial.println("Cannot Sleep"); }
+        if(loop_count % 50000 == 0) 
+        { 
+            Serial.print("Runtime: ");
+            Serial.print(seconds);
+            Serial.println(" seconds");
+        }
+
         os_runloop_once();
     }
+    loop_count ++;
 }
 
 /*
@@ -333,6 +348,7 @@ void LoraWANSaveLMICToRTC()
     RTC_LORAWAN_adrAckReq = LMIC.adrAckReq;
     RTC_LORAWAN_rx1DrOffset = LMIC.rx1DrOffset;
     RTC_LORAWAN_rxDelay = LMIC.rxDelay;
+    RTC_LORAWAN_opmode = LMIC.opmode;
     memcpy(RTC_LORAWAN_channelFreq, LMIC.channelFreq, MAX_CHANNELS * sizeof(u4_t));
     memcpy(RTC_LORAWAN_channelDrMap, LMIC.channelDrMap, MAX_CHANNELS * sizeof(u2_t));
     memcpy(RTC_LORAWAN_channelDlFreq, LMIC.channelDlFreq, MAX_CHANNELS * sizeof(u4_t));
@@ -353,9 +369,64 @@ void LoraWANLoadLMICFromRTC()
     LMIC.adrAckReq = RTC_LORAWAN_adrAckReq;
     LMIC.rx1DrOffset = RTC_LORAWAN_rx1DrOffset;
     LMIC.rxDelay = RTC_LORAWAN_rxDelay;
+    LMIC.opmode = RTC_LORAWAN_opmode;
     memcpy(LMIC.channelFreq, RTC_LORAWAN_channelFreq, MAX_CHANNELS * sizeof(u4_t));
     memcpy(LMIC.channelDrMap, RTC_LORAWAN_channelDrMap, MAX_CHANNELS * sizeof(u2_t));
     memcpy(LMIC.channelDlFreq, RTC_LORAWAN_channelDlFreq, MAX_CHANNELS * sizeof(u4_t));
     memcpy(LMIC.bands, RTC_LORAWAN_bands, MAX_BANDS * sizeof(band_t));
     LMIC.channelMap = RTC_LORAWAN_channelMap;
+}
+
+void LoraWANPrintVersion(void)
+{
+    Serial.print(F("LMIC Version: "));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MAJOR (ARDUINO_LMIC_VERSION) );
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MINOR (ARDUINO_LMIC_VERSION) );
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_PATCH (ARDUINO_LMIC_VERSION) );
+    Serial.print(F("."));
+    Serial.println(ARDUINO_LMIC_VERSION_GET_LOCAL (ARDUINO_LMIC_VERSION) );  
+}
+
+// opmode def 
+// https://github.com/mcci-catena/arduino-lmic/blob/89c28c5888338f8fc851851bb64968f2a493462f/src/lmic/lmic.h#L233
+void LoraWANPrintLMICOpmode(void)
+{
+    Serial.print(F("LMIC.opmode: "));
+    if (LMIC.opmode & OP_NONE) { Serial.print(F("OP_NONE ")); }
+    if (LMIC.opmode & OP_SCAN) { Serial.print(F("OP_SCAN ")); }
+    if (LMIC.opmode & OP_TRACK) { Serial.print(F("OP_TRACK ")); }
+    if (LMIC.opmode & OP_JOINING) { Serial.print(F("OP_JOINING ")); }
+    if (LMIC.opmode & OP_TXDATA) { Serial.print(F("OP_TXDATA ")); }
+    if (LMIC.opmode & OP_POLL) { Serial.print(F("OP_POLL ")); }
+    if (LMIC.opmode & OP_REJOIN) { Serial.print(F("OP_REJOIN ")); }
+    if (LMIC.opmode & OP_SHUTDOWN) { Serial.print(F("OP_SHUTDOWN ")); }
+    if (LMIC.opmode & OP_TXRXPEND) { Serial.print(F("OP_TXRXPEND ")); }
+    if (LMIC.opmode & OP_RNDTX) { Serial.print(F("OP_RNDTX ")); }
+    if (LMIC.opmode & OP_PINGINI) { Serial.print(F("OP_PINGINI ")); }
+    if (LMIC.opmode & OP_PINGABLE) { Serial.print(F("OP_PINGABLE ")); }
+    if (LMIC.opmode & OP_NEXTCHNL) { Serial.print(F("OP_NEXTCHNL ")); }
+    if (LMIC.opmode & OP_LINKDEAD) { Serial.print(F("OP_LINKDEAD ")); }
+    if (LMIC.opmode & OP_LINKDEAD) { Serial.print(F("OP_LINKDEAD ")); }
+    if (LMIC.opmode & OP_TESTMODE) { Serial.print(F("OP_TESTMODE ")); }
+    if (LMIC.opmode & OP_UNJOIN) { Serial.print(F("OP_UNJOIN ")); }
+    Serial.println("");
+}
+
+void LoraWANDebug(void)
+{
+    LoraWANPrintLMICOpmode();
+    Serial.print("LMIC.globalDutyRate = "); Serial.println( LMIC.globalDutyRate );
+    Serial.print("LMIC.globalDutyAvail = "); Serial.println( LMIC.globalDutyAvail );
+    Serial.print("LMICbandplan_nextTx = "); Serial.println( LMICbandplan_nextTx( os_getTime() ) );
+    Serial.print("os_getTime = "); Serial.println(  os_getTime() );
+    Serial.print("LMIC.txend = "); Serial.println( LMIC.txend );
+    for (u1_t bi = 0; bi<MAX_BANDS; bi++) 
+    {
+        Serial.print("Band ");
+        Serial.print( bi );
+        Serial.print( " " );
+        Serial.println( LMIC.bands[bi].avail );            
+    }
 }

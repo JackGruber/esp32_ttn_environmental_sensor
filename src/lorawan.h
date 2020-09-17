@@ -37,6 +37,7 @@ extern RTC_DATA_ATTR u1_t RTC_LORAWAN_txChnl;
 extern RTC_DATA_ATTR s2_t RTC_LORAWAN_adrAckReq;
 extern RTC_DATA_ATTR u1_t RTC_LORAWAN_rx1DrOffset;
 extern RTC_DATA_ATTR u1_t RTC_LORAWAN_rxDelay;
+extern RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
 extern RTC_DATA_ATTR u4_t RTC_LORAWAN_channelFreq[MAX_CHANNELS];
 extern RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
 extern RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
@@ -53,6 +54,8 @@ void LoraWANDo(void);
 void LoraWANGetData(void);
 void LoraWANSaveLMICToRTC(void);
 void LoraWANLoadLMICFromRTC(void);
-void LoraWANCopyLmic(struct lmic_t *source, struct lmic_t *destination);
+void LoraWANPrintVersion(void);
+void LoraWANPrintLMICOpmode(void);
+void LoraWANDebug(void);
 
 #endif
