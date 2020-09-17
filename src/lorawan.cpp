@@ -377,3 +377,43 @@ void LoraWANPrintVersion(void)
 }
 
 // opmode def 
+// https://github.com/mcci-catena/arduino-lmic/blob/89c28c5888338f8fc851851bb64968f2a493462f/src/lmic/lmic.h#L233
+void LoraWANPrintLMICOpmode(void)
+{
+    Serial.print(F("LMIC.opmode: "));
+    if (LMIC.opmode & OP_NONE) { Serial.print(F("OP_NONE ")); }
+    if (LMIC.opmode & OP_SCAN) { Serial.print(F("OP_SCAN ")); }
+    if (LMIC.opmode & OP_TRACK) { Serial.print(F("OP_TRACK ")); }
+    if (LMIC.opmode & OP_JOINING) { Serial.print(F("OP_JOINING ")); }
+    if (LMIC.opmode & OP_TXDATA) { Serial.print(F("OP_TXDATA ")); }
+    if (LMIC.opmode & OP_POLL) { Serial.print(F("OP_POLL ")); }
+    if (LMIC.opmode & OP_REJOIN) { Serial.print(F("OP_REJOIN ")); }
+    if (LMIC.opmode & OP_SHUTDOWN) { Serial.print(F("OP_SHUTDOWN ")); }
+    if (LMIC.opmode & OP_TXRXPEND) { Serial.print(F("OP_TXRXPEND ")); }
+    if (LMIC.opmode & OP_RNDTX) { Serial.print(F("OP_RNDTX ")); }
+    if (LMIC.opmode & OP_PINGINI) { Serial.print(F("OP_PINGINI ")); }
+    if (LMIC.opmode & OP_PINGABLE) { Serial.print(F("OP_PINGABLE ")); }
+    if (LMIC.opmode & OP_NEXTCHNL) { Serial.print(F("OP_NEXTCHNL ")); }
+    if (LMIC.opmode & OP_LINKDEAD) { Serial.print(F("OP_LINKDEAD ")); }
+    if (LMIC.opmode & OP_LINKDEAD) { Serial.print(F("OP_LINKDEAD ")); }
+    if (LMIC.opmode & OP_TESTMODE) { Serial.print(F("OP_TESTMODE ")); }
+    if (LMIC.opmode & OP_UNJOIN) { Serial.print(F("OP_UNJOIN ")); }
+    Serial.println("");
+}
+
+void LoraWANDebug(void)
+{
+    LoraWANPrintLMICOpmode();
+    Serial.print("LMIC.globalDutyRate = "); Serial.println( LMIC.globalDutyRate );
+    Serial.print("LMIC.globalDutyAvail = "); Serial.println( LMIC.globalDutyAvail );
+    Serial.print("LMICbandplan_nextTx = "); Serial.println( LMICbandplan_nextTx( os_getTime() ) );
+    Serial.print("os_getTime = "); Serial.println(  os_getTime() );
+    Serial.print("LMIC.txend = "); Serial.println( LMIC.txend );
+    for (u1_t bi = 0; bi<MAX_BANDS; bi++) 
+    {
+        Serial.print("Band ");
+        Serial.print( bi );
+        Serial.print( " " );
+        Serial.println( LMIC.bands[bi].avail );            
+    }
+}
