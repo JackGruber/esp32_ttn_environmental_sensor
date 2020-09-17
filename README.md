@@ -74,13 +74,20 @@ function Decoder(bytes, port) {
     decoded.pm10 = ((bytes[3] << (8*1) | bytes[4] << (8*0)) / 10);
   }
   
-  decoded.temperature = ((bytes[5]<<24>>16 | bytes[6]) / 10);
+  if(bytes[5] != 255 || bytes[6] != 255)
+  {
+    decoded.temperature = ((bytes[5]<<24>>16 | bytes[6]) / 10);
+  }
   
-  decoded.humidity = bytes[7];
-  decoded.humidity &= ~(1 << 7);
-  if(bytes[7] >> 7 == 1) { decoded.humidity +=0.5 }
+  if(bytes[7] != 255)
+  {
+    decoded.humidity = bytes[7];
+    decoded.humidity &= ~(1 << 7);
+    if(bytes[7] >> 7 == 1) { decoded.humidity +=0.5 }
+  }
   
-  decoded.pressure = (bytes[8] << (8*0) | bytes[9] << (8*1) | bytes[10]  << (8*2)) / 100;
+  pressure = (bytes[8] << (8*0) | bytes[9] << (8*1) | bytes[10]  << (8*2)) / 100;
+  if(pressure >= 300 && pressure <= 1100) { decoded.pressure = pressure }
 
   return decoded;
 }

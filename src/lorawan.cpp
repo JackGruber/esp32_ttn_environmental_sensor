@@ -42,12 +42,12 @@ RTC_DATA_ATTR u1_t RTC_LORAWAN_txChnl;
 RTC_DATA_ATTR s2_t RTC_LORAWAN_adrAckReq;
 RTC_DATA_ATTR u1_t RTC_LORAWAN_rx1DrOffset;
 RTC_DATA_ATTR u1_t RTC_LORAWAN_rxDelay;
+RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
 RTC_DATA_ATTR u4_t RTC_LORAWAN_channelFreq[MAX_CHANNELS];
 RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
 RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
 RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
 RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
-RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
 
 void LoRaWANSetup()
 {
@@ -230,7 +230,7 @@ void LoraWANDo(void)
         Serial.println(F(" seconds"));
         LoraWANSaveLMICToRTC();
         Serial.flush();
-        PowerDeepSleepTimer(LORA_TX_INTERVAL - 30);
+        PowerDeepSleepTimer(LORA_TX_INTERVAL - 30 - 8); // 30sec for SDS011, 8 sec for remaining code 
     }
     else
     {
@@ -272,7 +272,7 @@ void LoraWANGetData()
     tmp_u8 = (ReadVBat() / 10) - 200;
     LORA_DATA[0] = tmp_u8;
 
-    // PM10
+    // PM25
     /**************************************************************************/
     tmp_u16 = (PM25 * 10);
     if (isnan(PM25))
