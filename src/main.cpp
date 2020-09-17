@@ -18,7 +18,7 @@ void setup()
     Serial.println(F("Starting environment sensor ..."));
     Serial.println("Sketch: " VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH "." BUILD_COMMIT "-" BUILD_BRANCH);
     Serial.println("Builddate: " BUILD_DATE " " BUILD_TIME);
-
+    LoraWANPrintVersion();
     PrintResetReason();
 
     setCpuFrequencyMhz(10);

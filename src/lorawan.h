@@ -54,5 +54,7 @@ void LoraWANGetData(void);
 void LoraWANSaveLMICToRTC(void);
 void LoraWANLoadLMICFromRTC(void);
 void LoraWANCopyLmic(struct lmic_t *source, struct lmic_t *destination);
+void LoraWANPrintVersion(void);
+void LoraWANPrintLMICOpmode(void);
 
 #endif

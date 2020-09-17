@@ -359,3 +359,17 @@ void LoraWANLoadLMICFromRTC()
     memcpy(LMIC.bands, RTC_LORAWAN_bands, MAX_BANDS * sizeof(band_t));
     LMIC.channelMap = RTC_LORAWAN_channelMap;
 }
+
+void LoraWANPrintVersion(void)
+{
+    Serial.print(F("LMIC Version: "));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MAJOR (ARDUINO_LMIC_VERSION) );
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MINOR (ARDUINO_LMIC_VERSION) );
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_PATCH (ARDUINO_LMIC_VERSION) );
+    Serial.print(F("."));
+    Serial.println(ARDUINO_LMIC_VERSION_GET_LOCAL (ARDUINO_LMIC_VERSION) );  
+}
+
+// opmode def 
