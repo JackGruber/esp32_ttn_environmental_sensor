@@ -46,5 +46,4 @@ void setup()
 void loop()
 {
     LoraWANDo();
-    delay(10);
 }
