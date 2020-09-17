@@ -78,12 +78,11 @@ void LoRaWANSetup()
 void LoraWANDo_send(osjob_t *j)
 {
     // Check if there is not a current TX/RX job running
-    if (LMIC.opmode & OP_TXRXPEND)
-    {
+    if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
-    }
-    else
-    {
+    } else if (LMIC.opmode & OP_TXDATA) {
+        Serial.println(F("OP_TXDATA, not sending"));
+    } else {
         LoraWANGetData();
 
         // Prepare upstream data transmission at the next possible time.
