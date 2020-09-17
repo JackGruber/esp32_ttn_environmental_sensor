@@ -230,7 +230,7 @@ void LoraWANDo(void)
         Serial.println(F(" seconds"));
         LoraWANSaveLMICToRTC();
         Serial.flush();
-        PowerDeepSleepTimer(LORA_TX_INTERVAL - 30);
+        PowerDeepSleepTimer(LORA_TX_INTERVAL - 30 - 8); // 30sec for SDS011, 8 sec for remaining code 
     }
     else
     {
