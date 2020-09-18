@@ -28,33 +28,14 @@ void os_getDevKey(u1_t *buf) { memcpy_P(buf, APPKEY, 16); }
 
 bool GO_DEEP_SLEEP = false;
 
-RTC_DATA_ATTR u4_t RTC_LORAWAN_netid = 0;
-RTC_DATA_ATTR devaddr_t RTC_LORAWAN_devaddr = 0;
-RTC_DATA_ATTR u1_t RTC_LORAWAN_nwkKey[16];
-RTC_DATA_ATTR u1_t RTC_LORAWAN_artKey[16];
-RTC_DATA_ATTR u1_t RTC_LORAWAN_dn2Dr;
-RTC_DATA_ATTR u1_t RTC_LORAWAN_dnConf;
-RTC_DATA_ATTR u4_t RTC_LORAWAN_seqnoDn;
-RTC_DATA_ATTR u4_t RTC_LORAWAN_seqnoUp = 0;
-RTC_DATA_ATTR s1_t RTC_LORAWAN_adrTxPow;
-RTC_DATA_ATTR s1_t RTC_LORAWAN_datarate;
-RTC_DATA_ATTR u1_t RTC_LORAWAN_txChnl;
-RTC_DATA_ATTR s2_t RTC_LORAWAN_adrAckReq;
-RTC_DATA_ATTR u1_t RTC_LORAWAN_rx1DrOffset;
-RTC_DATA_ATTR u1_t RTC_LORAWAN_rxDelay;
-RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
-RTC_DATA_ATTR u4_t RTC_LORAWAN_channelFreq[MAX_CHANNELS];
-RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
-RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
-RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
-RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
+RTC_DATA_ATTR lmic_t RTC_LMIC;
 
 void LoRaWANSetup()
 {
     Serial.println(F("LoRaWAN_Setup ..."));
 
     Serial.print(F("Saved seqnoUp: "));
-    Serial.println(RTC_LORAWAN_seqnoUp);
+    Serial.println(LMIC.seqnoUp);
 
     // LMIC init
     os_init();
@@ -65,7 +46,7 @@ void LoRaWANSetup()
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
 
-    if (RTC_LORAWAN_seqnoUp != 0)
+    if (LMIC.seqnoUp != 0)
     {
         LoraWANLoadLMICFromRTC();
         LMICbandplan_joinAcceptChannelClear();
@@ -334,47 +315,14 @@ void LoraWANGetData()
 void LoraWANSaveLMICToRTC()
 {
     Serial.println(F("Save LMIC to RTC ..."));
-    RTC_LORAWAN_netid = LMIC.netid;
-    RTC_LORAWAN_devaddr = LMIC.devaddr;
-    memcpy(RTC_LORAWAN_nwkKey, LMIC.nwkKey, 16);
-    memcpy(RTC_LORAWAN_artKey, LMIC.artKey, 16);
-    RTC_LORAWAN_dn2Dr = LMIC.dn2Dr;
-    RTC_LORAWAN_dnConf = LMIC.dnConf;
-    RTC_LORAWAN_seqnoDn = LMIC.seqnoDn;
-    RTC_LORAWAN_seqnoUp = LMIC.seqnoUp;
-    RTC_LORAWAN_adrTxPow = LMIC.adrTxPow;
-    RTC_LORAWAN_datarate = LMIC.datarate;
-    RTC_LORAWAN_txChnl = LMIC.txChnl;
-    RTC_LORAWAN_adrAckReq = LMIC.adrAckReq;
-    RTC_LORAWAN_rx1DrOffset = LMIC.rx1DrOffset;
-    RTC_LORAWAN_rxDelay = LMIC.rxDelay;
-    RTC_LORAWAN_opmode = LMIC.opmode;
-    memcpy(RTC_LORAWAN_channelFreq, LMIC.channelFreq, MAX_CHANNELS * sizeof(u4_t));
-    memcpy(RTC_LORAWAN_channelDrMap, LMIC.channelDrMap, MAX_CHANNELS * sizeof(u2_t));
-    memcpy(RTC_LORAWAN_channelDlFreq, LMIC.channelDlFreq, MAX_CHANNELS * sizeof(u4_t));
-    memcpy(RTC_LORAWAN_bands, LMIC.bands, MAX_BANDS * sizeof(band_t));
-    RTC_LORAWAN_channelMap = LMIC.channelMap;
+    RTC_LMIC = LMIC;
 }
 
 void LoraWANLoadLMICFromRTC()
 {
     Serial.println(F("Load LMIC vars from RTC ..."));
-    LMIC_setSession(RTC_LORAWAN_netid, RTC_LORAWAN_devaddr, RTC_LORAWAN_nwkKey, RTC_LORAWAN_artKey);
-    LMIC.dn2Dr = RTC_LORAWAN_dn2Dr;
-    LMIC.dnConf = RTC_LORAWAN_dnConf;
-    LMIC.seqnoDn = RTC_LORAWAN_seqnoDn;
-    LMIC_setSeqnoUp(RTC_LORAWAN_seqnoUp);
-    LMIC_setDrTxpow(RTC_LORAWAN_datarate, RTC_LORAWAN_adrTxPow);
-    LMIC.txChnl = RTC_LORAWAN_txChnl;
-    LMIC.adrAckReq = RTC_LORAWAN_adrAckReq;
-    LMIC.rx1DrOffset = RTC_LORAWAN_rx1DrOffset;
-    LMIC.rxDelay = RTC_LORAWAN_rxDelay;
-    LMIC.opmode = RTC_LORAWAN_opmode;
-    memcpy(LMIC.channelFreq, RTC_LORAWAN_channelFreq, MAX_CHANNELS * sizeof(u4_t));
-    memcpy(LMIC.channelDrMap, RTC_LORAWAN_channelDrMap, MAX_CHANNELS * sizeof(u2_t));
-    memcpy(LMIC.channelDlFreq, RTC_LORAWAN_channelDlFreq, MAX_CHANNELS * sizeof(u4_t));
-    memcpy(LMIC.bands, RTC_LORAWAN_bands, MAX_BANDS * sizeof(band_t));
-    LMIC.channelMap = RTC_LORAWAN_channelMap;
+    LMIC = RTC_LMIC;
+
 }
 
 void LoraWANPrintVersion(void)

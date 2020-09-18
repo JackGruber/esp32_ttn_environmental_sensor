@@ -23,26 +23,7 @@ static const u1_t PROGMEM APPKEY[16] = TTN_APPKEY;
 static osjob_t sendjob;
 
 // LMIC State save for reboot
-extern RTC_DATA_ATTR u4_t RTC_LORAWAN_netid;
-extern RTC_DATA_ATTR devaddr_t RTC_LORAWAN_devaddr;
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_nwkKey[16];
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_artKey[16];
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_dn2Dr;
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_dnConf;
-extern RTC_DATA_ATTR u4_t RTC_LORAWAN_seqnoDn;
-extern RTC_DATA_ATTR u4_t RTC_LORAWAN_seqnoUp;
-extern RTC_DATA_ATTR s1_t RTC_LORAWAN_adrTxPow;
-extern RTC_DATA_ATTR s1_t RTC_LORAWAN_datarate;
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_txChnl;
-extern RTC_DATA_ATTR s2_t RTC_LORAWAN_adrAckReq;
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_rx1DrOffset;
-extern RTC_DATA_ATTR u1_t RTC_LORAWAN_rxDelay;
-extern RTC_DATA_ATTR u2_t RTC_LORAWAN_opmode;
-extern RTC_DATA_ATTR u4_t RTC_LORAWAN_channelFreq[MAX_CHANNELS];
-extern RTC_DATA_ATTR u2_t RTC_LORAWAN_channelDrMap[MAX_CHANNELS];
-extern RTC_DATA_ATTR u4_t RTC_LORAWAN_channelDlFreq[MAX_CHANNELS];
-extern RTC_DATA_ATTR band_t RTC_LORAWAN_bands[MAX_BANDS];
-extern RTC_DATA_ATTR u2_t RTC_LORAWAN_channelMap;
+extern RTC_DATA_ATTR lmic_t RTC_LMIC;
 
 void os_getArtEui(u1_t *buf);
 void os_getDevEui(u1_t *buf);
