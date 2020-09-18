@@ -46,7 +46,7 @@ void LoRaWANSetup()
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
 
-    if (LMIC.seqnoUp != 0)
+    if (RTC_LMIC.seqnoUp != 0)
     {
         LoraWANLoadLMICFromRTC();
         LMICbandplan_joinAcceptChannelClear();
