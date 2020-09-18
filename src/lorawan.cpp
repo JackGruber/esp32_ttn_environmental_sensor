@@ -154,8 +154,6 @@ void onEvent(ev_t ev)
             Serial.println(F(" bytes of payload"));
         }
 
-        // Schedule next transmission
-        os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), LoraWANDo_send);
         GO_DEEP_SLEEP = true;
 
         break;
@@ -203,7 +201,7 @@ void LoraWANDo(void)
 {
     static int loop_count = 0;
     long seconds = millis() / 1000;
-    if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000) - 1000)))
+    if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000))))
     {
         Serial.println(F("Go to DeepSleep ..."));
         Serial.print(F("Runtime was: "));
