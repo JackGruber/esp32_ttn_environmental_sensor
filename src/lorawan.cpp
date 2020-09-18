@@ -323,6 +323,13 @@ void LoraWANLoadLMICFromRTC()
     Serial.println(F("Load LMIC vars from RTC ..."));
     LMIC = RTC_LMIC;
 
+    // ESP32 can't track millis during DeepSleep and no option to advanced millis after DeepSleep.
+    // Therefore reset DutyCyles
+    for (u1_t bi = 0; bi < MAX_BANDS; bi++)
+    {
+        LMIC.bands[bi].avail = 0;
+    }
+    LMIC.globalDutyAvail = 0;
 }
 
 void LoraWANPrintVersion(void)
