@@ -416,17 +416,57 @@ void LoraWANPrintLMICOpmode(void)
 
 void LoraWANDebug(void)
 {
+    Serial.println("");
+    Serial.println("");
+    
     LoraWANPrintLMICOpmode();
-    Serial.print("LMIC.globalDutyRate = "); Serial.println( LMIC.globalDutyRate );
-    Serial.print("LMIC.globalDutyAvail = "); Serial.println( LMIC.globalDutyAvail );
-    Serial.print("LMICbandplan_nextTx = "); Serial.println( LMICbandplan_nextTx( os_getTime() ) );
-    Serial.print("os_getTime = "); Serial.println(  os_getTime() );
-    Serial.print("LMIC.txend = "); Serial.println( LMIC.txend );
-    for (u1_t bi = 0; bi<MAX_BANDS; bi++) 
+
+    Serial.print("LMIC.seqnoUp = ");
+    Serial.println(LMIC.seqnoUp); 
+
+    Serial.print("LMIC.globalDutyRate = ");
+    Serial.print(LMIC.globalDutyRate);
+    Serial.print(" osTicks, ");
+    Serial.print(osticks2ms(LMIC.globalDutyRate)/1000);
+    Serial.println(" sec");
+
+    Serial.print("LMIC.globalDutyAvail = ");
+    Serial.print(LMIC.globalDutyAvail);
+    Serial.print(" osTicks, ");
+    Serial.print(osticks2ms(LMIC.globalDutyAvail)/1000);
+    Serial.println(" sec");
+
+    Serial.print("LMICbandplan_nextTx = ");
+    Serial.print(LMICbandplan_nextTx(os_getTime()));
+    Serial.print(" osTicks, ");
+    Serial.print(osticks2ms(LMICbandplan_nextTx(os_getTime()))/1000);
+    Serial.println(" sec");
+
+    Serial.print("os_getTime = ");
+    Serial.print(os_getTime());
+    Serial.print(" osTicks, ");
+    Serial.print(osticks2ms(os_getTime()) / 1000);
+    Serial.println(" sec");
+
+    Serial.print("LMIC.txend = ");
+    Serial.println(LMIC.txend);
+    Serial.print("LMIC.txChnl = ");
+    Serial.println(LMIC.txChnl);
+
+    Serial.println("Band \tavail \t\tavail_sec\tlastchnl \ttxcap");
+    for (u1_t bi = 0; bi < MAX_BANDS; bi++)
     {
-        Serial.print("Band ");
-        Serial.print( bi );
-        Serial.print( " " );
-        Serial.println( LMIC.bands[bi].avail );            
+        Serial.print(bi);
+        Serial.print("\t");
+        Serial.print(LMIC.bands[bi].avail);
+        Serial.print("\t\t");
+        Serial.print(osticks2ms(LMIC.bands[bi].avail)/1000);
+        Serial.print("\t\t");
+        Serial.print(LMIC.bands[bi].lastchnl);
+        Serial.print("\t\t");
+        Serial.println(LMIC.bands[bi].txcap);
+        
     }
+    Serial.println("");
+    Serial.println("");
 }
