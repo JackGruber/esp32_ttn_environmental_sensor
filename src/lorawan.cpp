@@ -221,6 +221,13 @@ void LoraWANDo(void)
             Serial.println(" seconds");
         }
 
+        #ifndef PRINTDEBUGS
+            if(seconds % 10 == 0) 
+            {
+                LoraWANDebug();
+            }
+        #endif
+
         os_runloop_once();
     }
     loop_count ++;
@@ -314,6 +321,10 @@ void LoraWANSaveLMICToRTC()
 {
     Serial.println(F("Save LMIC to RTC ..."));
     RTC_LMIC = LMIC;
+
+    #ifndef PRINTDEBUGS
+        LoraWANDebug();
+    #endif
 }
 
 void LoraWANLoadLMICFromRTC()
@@ -328,6 +339,10 @@ void LoraWANLoadLMICFromRTC()
         LMIC.bands[bi].avail = 0;
     }
     LMIC.globalDutyAvail = 0;
+
+    #ifndef PRINTDEBUGS
+        LoraWANDebug();
+    #endif
 }
 
 void LoraWANPrintVersion(void)
