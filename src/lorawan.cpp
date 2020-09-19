@@ -213,8 +213,7 @@ void LoraWANDo(void)
     }
     else
     {
-        if(loop_count % 10000 == 0) { Serial.println("Cannot Sleep"); }
-        if(loop_count % 50000 == 0) 
+        if(seconds % 5 == 0) 
         { 
             Serial.print("Runtime: ");
             Serial.print(seconds);
