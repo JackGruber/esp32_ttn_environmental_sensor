@@ -46,7 +46,7 @@ void LoRaWANSetup()
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
 
-    if (LMIC.seqnoUp != 0)
+    if (RTC_LMIC.seqnoUp != 0)
     {
         LoraWANLoadLMICFromRTC();
         LMICbandplan_joinAcceptChannelClear();
@@ -154,8 +154,6 @@ void onEvent(ev_t ev)
             Serial.println(F(" bytes of payload"));
         }
 
-        // Schedule next transmission
-        os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), LoraWANDo_send);
         GO_DEEP_SLEEP = true;
 
         break;
@@ -203,25 +201,33 @@ void LoraWANDo(void)
 {
     static int loop_count = 0;
     long seconds = millis() / 1000;
-    if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000) - 1000)))
+    if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000))))
     {
         Serial.println(F("Go to DeepSleep ..."));
         Serial.print(F("Runtime was: "));
         Serial.print(seconds);
         Serial.println(F(" seconds"));
+
         LoraWANSaveLMICToRTC();
         Serial.flush();
+
         PowerDeepSleepTimer(LORA_TX_INTERVAL - 30 - 8); // 30sec for SDS011, 8 sec for remaining code 
     }
     else
     {
-        if(loop_count % 10000 == 0) { Serial.println("Cannot Sleep"); }
-        if(loop_count % 50000 == 0) 
+        if(seconds % 5 == 0) 
         { 
             Serial.print("Runtime: ");
             Serial.print(seconds);
             Serial.println(" seconds");
         }
+        
+        #ifndef PRINTDEBUGS
+            if(seconds % 10 == 0) 
+            {
+                LoraWANDebug();
+            }
+        #endif
 
         os_runloop_once();
     }
@@ -285,7 +291,6 @@ void LoraWANGetData()
     /**************************************************************************/
     tmp_u16 = (BME280ReadTemperature() * 10);
     LORA_DATA[5] = tmp_u16 >> 8;
-    ;
     LORA_DATA[6] = tmp_u16 & 0xFF;
 
     // Humidity
@@ -316,6 +321,10 @@ void LoraWANSaveLMICToRTC()
 {
     Serial.println(F("Save LMIC to RTC ..."));
     RTC_LMIC = LMIC;
+
+    #ifndef PRINTDEBUGS
+        LoraWANDebug();
+    #endif
 }
 
 void LoraWANLoadLMICFromRTC()
@@ -330,6 +339,10 @@ void LoraWANLoadLMICFromRTC()
         LMIC.bands[bi].avail = 0;
     }
     LMIC.globalDutyAvail = 0;
+
+    #ifndef PRINTDEBUGS
+        LoraWANDebug();
+    #endif
 }
 
 void LoraWANPrintVersion(void)

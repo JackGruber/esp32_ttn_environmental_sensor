@@ -3,3 +3,4 @@
 #define SDS011_SERIAL Serial2 // Pin 16/17
 #define REF_VCCRAW_ESP32 931 // VCCraw read from ESP32
 #define REF_VBAT 3496 // Voltage in mV at battery
+#define PRINTDEBUGS

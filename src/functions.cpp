@@ -6,7 +6,7 @@
 
 void PrintResetReason()
 {
-  Serial.print("MCUSR:");
+  Serial.print("MCUSR: ");
   switch (rtc_get_reset_reason(0))
   {
   case 1:
