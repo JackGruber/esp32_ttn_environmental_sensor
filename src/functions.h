@@ -7,5 +7,7 @@
 void PrintResetReason(void);
 void SetupPins();
 long ReadVBat();
+void I2CScanner(void);
+bool I2CCheckAddress(byte);
 
 #endif

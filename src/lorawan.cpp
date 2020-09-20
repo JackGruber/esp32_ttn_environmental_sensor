@@ -8,6 +8,7 @@
 #include <particle.h>
 #include <global.h>
 #include <bme280.h>
+#include <veml6075.h>
 
 // Pin mapping
 const lmic_pinmap lmic_pins = {
@@ -17,7 +18,7 @@ const lmic_pinmap lmic_pins = {
     .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
 };
 
-static uint8_t LORA_DATA[11];
+static uint8_t LORA_DATA[12];
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
 const unsigned TX_INTERVAL = LORA_TX_INTERVAL;
@@ -199,8 +200,10 @@ void onEvent(ev_t ev)
 
 void LoraWANDo(void)
 {
-    static int loop_count = 0;
     long seconds = millis() / 1000;
+    static unsigned long last_runntime_info = 0;
+    static unsigned long runntime_info_ever_ms = 5000;
+
     if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000))))
     {
         Serial.println(F("Go to DeepSleep ..."));
@@ -215,23 +218,19 @@ void LoraWANDo(void)
     }
     else
     {
-        if(seconds % 5 == 0) 
+        if(last_runntime_info + runntime_info_ever_ms <  millis()) 
         { 
             Serial.print("Runtime: ");
             Serial.print(seconds);
             Serial.println(" seconds");
-        }
-        
-        #ifndef PRINTDEBUGS
-            if(seconds % 10 == 0) 
-            {
+            #ifndef PRINTDEBUGS
                 LoraWANDebug();
-            }
-        #endif
+            #endif
+            last_runntime_info = millis();
+        }
 
         os_runloop_once();
     }
-    loop_count ++;
 }
 
 /*
@@ -246,6 +245,7 @@ void LoraWANDo(void)
     Byte 9: Pressure
     Byte 10: Pressure
     Byte 11: Pressure (first Bit), the remaining not used
+    Byte 12: UV Index
 */
 void LoraWANGetData()
 {
@@ -287,34 +287,57 @@ void LoraWANGetData()
         LORA_DATA[4] = tmp_u16 & 0xFF;
     }
 
-    // Temperature
-    /**************************************************************************/
-    tmp_u16 = (BME280ReadTemperature() * 10);
-    LORA_DATA[5] = tmp_u16 >> 8;
-    LORA_DATA[6] = tmp_u16 & 0xFF;
-
-    // Humidity
-    /**************************************************************************/
-    tmp_float = BME280ReadHumidity();
-    tmp_u8 = tmp_float;
-    LORA_DATA[7] = tmp_u8;
-    // Bit 8 for decimal 1 = 0.5
-    if ((tmp_float - tmp_u8) > 0.251 && (tmp_float - tmp_u8) < 0.751)
+    if(I2CCheckAddress(0x76))
     {
-        LORA_DATA[7] |= (1 << 7);
+        // Temperature
+        /**************************************************************************/
+        tmp_u16 = (BME280ReadTemperature() * 10);
+        LORA_DATA[5] = tmp_u16 >> 8;
+        LORA_DATA[6] = tmp_u16 & 0xFF;
+
+        // Humidity
+        /**************************************************************************/
+        tmp_float = BME280ReadHumidity();
+        tmp_u8 = tmp_float;
+        LORA_DATA[7] = tmp_u8;
+        // Bit 8 for decimal 1 = 0.5
+        if ((tmp_float - tmp_u8) > 0.251 && (tmp_float - tmp_u8) < 0.751)
+        {
+            LORA_DATA[7] |= (1 << 7);
+        }
+        else if ((tmp_float - tmp_u8) > 0.751)
+        {
+            LORA_DATA[7] = LORA_DATA[7] + 1;
+        }
+
+        // Pressure
+        /**************************************************************************/
+        tmp_float = BME280ReadPressure();
+        tmp_u32 = (tmp_float * 100);
+        LORA_DATA[8] = (tmp_u32 >> (8 * 0)) & 0xff;
+        LORA_DATA[9] = (tmp_u32 >> (8 * 1)) & 0xff;
+        LORA_DATA[10] = (tmp_u32 >> (8 * 2)) & 0xff;
     }
-    else if ((tmp_float - tmp_u8) > 0.751)
+    else
     {
-        LORA_DATA[7] = LORA_DATA[7] + 1;
+        LORA_DATA[5] = 255;
+        LORA_DATA[6] = 255;
+        LORA_DATA[7] = 255;
+        LORA_DATA[8] = 255;
+        LORA_DATA[9] = 255;
     }
 
-    // Pressure
-    /**************************************************************************/
-    tmp_float = BME280ReadPressure();
-    tmp_u32 = (tmp_float * 100);
-    LORA_DATA[8] = (tmp_u32 >> (8 * 0)) & 0xff;
-    LORA_DATA[9] = (tmp_u32 >> (8 * 1)) & 0xff;
-    LORA_DATA[10] = (tmp_u32 >> (8 * 2)) & 0xff;
+    // UV Index
+    if(I2CCheckAddress(0x10))
+    {
+        tmp_float = VEML6075GetUVI();
+        tmp_u8 = (tmp_float * 10);
+        LORA_DATA[11] = tmp_u8;
+    }
+    else
+    {
+        LORA_DATA[11] = 255;
+    }
 }
 
 void LoraWANSaveLMICToRTC()

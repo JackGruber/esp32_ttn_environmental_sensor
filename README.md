@@ -17,6 +17,7 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 * 1x BME280 sensor
 * 1x SDS011 module
 * 1x IRL3103PBF
+* 1x VEML6075
 * Housing IP65 115 x 90 x 55 mm
 * Cable Gland PG7
 * Standoff/Spacer 20 mm
@@ -88,6 +89,8 @@ function Decoder(bytes, port) {
   
   pressure = (bytes[8] << (8*0) | bytes[9] << (8*1) | bytes[10]  << (8*2)) / 100;
   if(pressure >= 300 && pressure <= 1100) { decoded.pressure = pressure }
+
+  if(bytes[11] != 255) decoded.uvi = bytes[11] / 10;
 
   return decoded;
 }
