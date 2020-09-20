@@ -8,6 +8,7 @@
 #include <particle.h>
 #include <global.h>
 #include <bme280.h>
+#include <veml6075.h>
 
 // Pin mapping
 const lmic_pinmap lmic_pins = {
@@ -17,7 +18,7 @@ const lmic_pinmap lmic_pins = {
     .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
 };
 
-static uint8_t LORA_DATA[11];
+static uint8_t LORA_DATA[12];
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
 const unsigned TX_INTERVAL = LORA_TX_INTERVAL;
@@ -246,6 +247,7 @@ void LoraWANDo(void)
     Byte 9: Pressure
     Byte 10: Pressure
     Byte 11: Pressure (first Bit), the remaining not used
+    Byte 12: UV Index
 */
 void LoraWANGetData()
 {
@@ -315,6 +317,11 @@ void LoraWANGetData()
     LORA_DATA[8] = (tmp_u32 >> (8 * 0)) & 0xff;
     LORA_DATA[9] = (tmp_u32 >> (8 * 1)) & 0xff;
     LORA_DATA[10] = (tmp_u32 >> (8 * 2)) & 0xff;
+
+    // UV Index
+    tmp_float = VEML6075GetUVI();
+    tmp_u8 = (tmp_float * 10);
+    LORA_DATA[11] = tmp_u8;
 }
 
 void LoraWANSaveLMICToRTC()
