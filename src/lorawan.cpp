@@ -200,8 +200,10 @@ void onEvent(ev_t ev)
 
 void LoraWANDo(void)
 {
-    static int loop_count = 0;
     long seconds = millis() / 1000;
+    static unsigned long last_runntime_info = 0;
+    static unsigned long runntime_info_ever_ms = 5000;
+
     if (GO_DEEP_SLEEP == true && !os_queryTimeCriticalJobs(ms2osticksRound((LORA_TX_INTERVAL * 1000))))
     {
         Serial.println(F("Go to DeepSleep ..."));
@@ -216,23 +218,19 @@ void LoraWANDo(void)
     }
     else
     {
-        if(seconds % 5 == 0) 
+        if(last_runntime_info + runntime_info_ever_ms <  millis()) 
         { 
             Serial.print("Runtime: ");
             Serial.print(seconds);
             Serial.println(" seconds");
-        }
-        
-        #ifndef PRINTDEBUGS
-            if(seconds % 10 == 0) 
-            {
+            #ifndef PRINTDEBUGS
                 LoraWANDebug();
-            }
-        #endif
+            #endif
+            last_runntime_info = millis();
+        }
 
         os_runloop_once();
     }
-    loop_count ++;
 }
 
 /*
