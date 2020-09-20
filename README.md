@@ -89,6 +89,8 @@ function Decoder(bytes, port) {
   pressure = (bytes[8] << (8*0) | bytes[9] << (8*1) | bytes[10]  << (8*2)) / 100;
   if(pressure >= 300 && pressure <= 1100) { decoded.pressure = pressure }
 
+  decoded.uvi = bytes[11] / 10;
+
   return decoded;
 }
 ```

@@ -9,6 +9,7 @@
 #include "version_build.h"
 #include "bme280.h"
 #include "esp32-hal-cpu.h"
+#include <veml6075.h>
 
 void setup()
 {
@@ -33,6 +34,9 @@ void setup()
     // Setup BME280 and print values
     BME280Setup();
     BME280PrintValues();
+
+    VEML6075Setup();
+    VEML6075GetUVI();
 
     // Setup SD011 and read values
     ParticlePower(true);
