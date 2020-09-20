@@ -29,14 +29,32 @@ void setup()
 
     SetupPins();
 
+    Wire.begin();
+    I2CScanner();
+
     ReadVBat();
 
     // Setup BME280 and print values
-    BME280Setup();
-    BME280PrintValues();
+    if(I2CCheckAddress(0x76))
+    {
+        BME280Setup();
+        BME280PrintValues();
+    }
+    else
+    {
+        Serial.println("No BME280 found!");
+    }
 
-    VEML6075Setup();
-    VEML6075GetUVI();
+    // Setup VEML6075
+    if(I2CCheckAddress(0x10))
+    {
+        VEML6075Setup();
+        VEML6075GetUVI();
+    }
+    else
+    {
+        Serial.println("No VEML6075 found!");
+    }
 
     // Setup SD011 and read values
     ParticlePower(true);

@@ -3,6 +3,7 @@
 #include <io_pins.h>
 #include <driver/adc.h>
 #include <settings.h>
+#include <Wire.h>
 
 void PrintResetReason()
 {
@@ -104,4 +105,15 @@ long ReadVBat()
   }
   else
     return 0;
+}
+
+bool I2CCheckAddress(byte address)
+{
+  byte error;
+  Wire.beginTransmission(address);
+  error = Wire.endTransmission();
+  if (error == 0)
+    return true;
+  else
+    return false;
 }
