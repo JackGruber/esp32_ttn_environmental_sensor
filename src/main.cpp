@@ -10,6 +10,8 @@
 #include "bme280.h"
 #include "esp32-hal-cpu.h"
 #include <veml6075.h>
+#include <power.h>
+#include "settings.h"
 
 void setup()
 {
@@ -32,7 +34,11 @@ void setup()
     Wire.begin();
     I2CScanner();
 
-    ReadVBat();
+    if( ReadVBat() < 3300)
+    {
+        Serial.println("Goto DeepSleep (VBat to low)");
+        PowerDeepSleepTimer(LORA_TX_INTERVAL);
+    }
 
     // Setup BME280 and print values
     if(I2CCheckAddress(0x76))
