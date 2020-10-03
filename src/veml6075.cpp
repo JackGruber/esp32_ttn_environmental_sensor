@@ -65,6 +65,8 @@ void VEML6075Setup(void)
         UVSENSOR.setCoefficients(2.22, 1.33,          // UVA_A and UVA_B coefficients
                                  2.95, 1.74,          // UVB_C and UVB_D coefficients
                                  0.001461, 0.002591); // UVA and UVB responses
+
+        UVSENSOR.shutdown(true);
     }
 }
 
