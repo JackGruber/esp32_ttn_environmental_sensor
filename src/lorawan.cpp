@@ -9,6 +9,7 @@
 #include <global.h>
 #include <bme280.h>
 #include <veml6075.h>
+#include <tsl2591.h>
 
 // Pin mapping
 const lmic_pinmap lmic_pins = {
@@ -18,7 +19,7 @@ const lmic_pinmap lmic_pins = {
     .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
 };
 
-static uint8_t LORA_DATA[12];
+static uint8_t LORA_DATA[15];
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
 const unsigned TX_INTERVAL = LORA_TX_INTERVAL;
@@ -246,6 +247,9 @@ void LoraWANDo(void)
     Byte 10: Pressure
     Byte 11: Pressure (first Bit), the remaining not used
     Byte 12: UV Index
+    Byte 13: LUX (Value: 0-8800000)
+    Byte 14: LUX
+    Byte 15: LUX
 */
 void LoraWANGetData()
 {
@@ -337,6 +341,23 @@ void LoraWANGetData()
     else
     {
         LORA_DATA[11] = 255;
+    }
+
+    // Lux
+    if (I2CCheckAddress(0x29))
+    {
+        tmp_float = TSL2591GetLux(true, true);
+        tmp_u32 = tmp_float * 100;
+
+        LORA_DATA[12] = (tmp_u32 >> (8 * 0)) & 0xff;
+        LORA_DATA[13] = (tmp_u32 >> (8 * 1)) & 0xff;
+        LORA_DATA[14] = (tmp_u32 >> (8 * 2)) & 0xff;
+    }
+    else
+    {
+        LORA_DATA[12] = 255;
+        LORA_DATA[13] = 255;
+        LORA_DATA[14] = 255;
     }
 }
 

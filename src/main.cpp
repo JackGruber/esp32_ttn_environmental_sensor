@@ -12,6 +12,7 @@
 #include <veml6075.h>
 #include <power.h>
 #include "settings.h"
+#include <tsl2591.h>
 
 void setup()
 {
@@ -60,6 +61,17 @@ void setup()
     else
     {
         Serial.println("No VEML6075 found!");
+    }
+
+    // Setup TSL2591
+    if (I2CCheckAddress(0x29))
+    {
+        TSL2591Setup();
+        TSL2591GetLux(true, true);
+    }
+    else
+    {
+        Serial.println("No TSL2591 found!");
     }
 
     // Setup SD011 and read values

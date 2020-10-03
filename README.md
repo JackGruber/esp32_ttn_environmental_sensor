@@ -16,6 +16,7 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 * 1x RFM95 module
 * 1x BME280 sensor
 * 1x SDS011 module
+* 1x TSL2591 sensor
 * 1x IRL3103PBF
 * 1x VEML6075
 * Housing IP65 115 x 90 x 55 mm
@@ -92,6 +93,11 @@ function Decoder(bytes, port) {
 
   if(bytes[11] != 255) decoded.uvi = bytes[11] / 10;
 
+  if(bytes[14] != 255)
+  {
+    decoded.lux = (bytes[12] << (8*0) | bytes[13] << (8*1) | bytes[14]  << (8*2)) / 100;
+  }
+  
   return decoded;
 }
 ```
