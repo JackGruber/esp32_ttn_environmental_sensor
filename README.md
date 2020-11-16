@@ -22,9 +22,7 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 * 1x TSL2591 sensor
 * 1x IRL3103PBF
 * 1x VEML6075 sensor
-* Housing IP65 115 x 90 x 55 mm
-* Cable Gland PG7
-* Standoff/Spacer 20 mm
+* 1x Housing IP65 171 x 121 x 55 mm
 * ...
 
 ## Schematic
