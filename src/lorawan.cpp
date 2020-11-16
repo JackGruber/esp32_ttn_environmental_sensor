@@ -347,6 +347,11 @@ void LoraWANGetData()
     if (I2CCheckAddress(0x29))
     {
         tmp_float = TSL2591GetLux(true, true);
+        if(tmp_float < 0)
+        {
+            Serial.println("MAX LUX reached!");
+            tmp_float = MAX_LUX;
+        }
         tmp_u32 = tmp_float * 100;
 
         LORA_DATA[12] = (tmp_u32 >> (8 * 0)) & 0xff;
