@@ -16,6 +16,7 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 * 1x 18650 battery holder
 * 1x 5V DC-DC boost converter module
 * 1x RFM95 module
+* 1x RFM95 breadboard
 * 1x BME280 sensor
 * 1x SDS011 module
 * 1x TSL2591 sensor
@@ -37,6 +38,10 @@ The charging LED lights up as soon as the solarpannel supplies some current. How
 To prevent this, I have soldered out the charging LED.
 
 <img src="img/TP4056_board_led.jpg">
+
+### RFM95 Breadboard
+
+I have use the [iBrick / RFM95LORA Breadboard](https://github.com/iBrick/RFM95LORA_Breadboard) to make the RFM95 module breadboard/hole matrix board friendly. You can direct download the [Gerberfile](https://github.com/iBrick/RFM95LORA_Breadboard/blob/master/RFM95Breadboard.rar) from the Git repro.
 
 ## Power consumption
 
