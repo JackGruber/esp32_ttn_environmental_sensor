@@ -2,6 +2,8 @@
 
 Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature, humidity, air pressure and fine dust.
 
+<img src="img/case_open.jpg">
+
 > ❗❗❗ Project is still under development / documents are not complete ❗❗❗
 
 ## Components / BOM
