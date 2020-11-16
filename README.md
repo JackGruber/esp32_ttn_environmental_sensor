@@ -110,6 +110,12 @@ function Decoder(bytes, port) {
 }
 ```
 
+## 3D Printing
+
+### Stevenson Screen
+
+For the Stevenson Screen, I have used a modle from [Thingiverse](https://www.thingiverse.com/thing:3044446/files)
+
 ## Links
 
 * [Thingiverse Stevenson Screen](https://www.thingiverse.com/thing:3044446/files)
