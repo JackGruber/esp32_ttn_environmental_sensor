@@ -112,6 +112,12 @@ function Decoder(bytes, port) {
 
 ## 3D Printing
 
+### Sensor mounting
+
+The STL and Fusion 360 Archive files are included in the 3D folder
+
+<img src="img/sensor_mounting.jpg">
+
 ### Stevenson Screen
 
 For the Stevenson Screen, I have used a modle from [Thingiverse](https://www.thingiverse.com/thing:3044446/files)
