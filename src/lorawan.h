@@ -33,7 +33,7 @@ void LoRaWANSetup(void);
 void LoraWANDo_send(osjob_t *j);
 void LoraWANDo(void);
 void LoraWANGetData(void);
-void LoraWANSaveLMICToRTC(void);
+void LoraWANSaveLMICToRTC(int deepsleep_sec);
 void LoraWANLoadLMICFromRTC(void);
 void LoraWANPrintVersion(void);
 void LoraWANPrintLMICOpmode(void);
