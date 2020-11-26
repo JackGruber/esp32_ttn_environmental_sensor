@@ -51,7 +51,6 @@ void LoRaWANSetup()
     if (RTC_LMIC.seqnoUp != 0)
     {
         LoraWANLoadLMICFromRTC();
-        LMICbandplan_joinAcceptChannelClear();
     }
 
     // Start job
