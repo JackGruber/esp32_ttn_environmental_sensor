@@ -51,7 +51,6 @@ void LoRaWANSetup()
     if (RTC_LMIC.seqnoUp != 0)
     {
         LoraWANLoadLMICFromRTC();
-        LMICbandplan_joinAcceptChannelClear();
     }
 
     // Start job
@@ -212,7 +211,7 @@ void LoraWANDo(void)
         Serial.print(seconds);
         Serial.println(F(" seconds"));
 
-        LoraWANSaveLMICToRTC();
+        LoraWANSaveLMICToRTC(LORA_TX_INTERVAL);
         Serial.flush();
 
         PowerDeepSleepTimer(LORA_TX_INTERVAL - 30 - 8); // 30sec for SDS011, 8 sec for remaining code 
@@ -366,10 +365,32 @@ void LoraWANGetData()
     }
 }
 
-void LoraWANSaveLMICToRTC()
+void LoraWANSaveLMICToRTC(int deepsleep_sec)
 {
     Serial.println(F("Save LMIC to RTC ..."));
     RTC_LMIC = LMIC;
+
+    //System time is resetted after sleep. So we need to calculate the dutycycle with a resetted system time
+    unsigned long now = millis();
+
+    // EU Like Bands
+#if defined(CFG_LMIC_EU_like)
+    for(int i = 0; i < MAX_BANDS; i++) {
+        ostime_t correctedAvail = RTC_LMIC.bands[i].avail - ((now/1000.0 + deepsleep_sec ) * OSTICKS_PER_SEC);
+        if(correctedAvail < 0) {
+            correctedAvail = 0;
+        }
+        RTC_LMIC.bands[i].avail = correctedAvail;
+    }
+
+    RTC_LMIC.globalDutyAvail = RTC_LMIC.globalDutyAvail - ((now/1000.0 + deepsleep_sec ) * OSTICKS_PER_SEC);
+    if(RTC_LMIC.globalDutyAvail < 0) 
+    {
+        RTC_LMIC.globalDutyAvail = 0;
+    }
+#else
+    Serial.println("No DutyCycle recalculation function!")
+#endif
 
     #ifndef PRINTDEBUGS
         LoraWANDebug(RTC_LMIC);
@@ -380,14 +401,6 @@ void LoraWANLoadLMICFromRTC()
 {
     Serial.println(F("Load LMIC vars from RTC ..."));
     LMIC = RTC_LMIC;
-
-    // ESP32 can't track millis during DeepSleep and no option to advanced millis after DeepSleep.
-    // Therefore reset DutyCyles
-    for (u1_t bi = 0; bi < MAX_BANDS; bi++)
-    {
-        LMIC.bands[bi].avail = 0;
-    }
-    LMIC.globalDutyAvail = 0;
 
     #ifndef PRINTDEBUGS
         LoraWANDebug(RTC_LMIC);
