@@ -37,6 +37,6 @@ void LoraWANSaveLMICToRTC(void);
 void LoraWANLoadLMICFromRTC(void);
 void LoraWANPrintVersion(void);
 void LoraWANPrintLMICOpmode(void);
-void LoraWANDebug(void);
+void LoraWANDebug(lmic_t lmic_to_check);
 
 #endif
