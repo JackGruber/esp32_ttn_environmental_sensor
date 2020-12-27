@@ -134,6 +134,17 @@ The STL and Fusion 360 Archive files are included in the 3D folder
 
 For the Stevenson Screen, I have used a modle from [Thingiverse](https://www.thingiverse.com/thing:3044446/files)
 
+## Pictures
+
+Grafana Dashboard for the visualization of the measured values.
+
+<img src="img/dashboard.jpg">
+
+The whole mounted outside on the windowsill.
+
+<img src="img/dust_sensor_outdoor.jpg">
+
+
 ## Links
 
 * [Thingiverse Stevenson Screen](https://www.thingiverse.com/thing:3044446/files)
