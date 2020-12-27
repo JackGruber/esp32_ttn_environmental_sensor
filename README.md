@@ -9,7 +9,7 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 * 1x WROOM32 module
 * 1x TP4056 module
 * 1x MCP1700-3302E
-* 2x Solar panel 6V 1W (110x60 mm)
+* 1x Solar panel 6V 3W (180x150 mm)
 * 1x 18650 battery
 * 1x 18650 battery holder
 * 1x 5V DC-DC boost converter module
@@ -38,6 +38,16 @@ To prevent this, I have soldered out the charging LED.
 
 <img src="img/TP4056_board_led.jpg">
 
+### Solar panel
+
+The simple solar panels with plastic covers do not withstand UV radiation and wether conditions very well outdoors and the performance decreases drastically.
+
+<img src="img/solar_panel_bad.jpg">
+
+Therefore, I now use a slightly better one with a glass cover.
+
+<img src="img/solar_panel.jpg">
+
 ### RFM95 Breadboard
 
 I have use the [iBrick / RFM95LORA Breadboard](https://github.com/iBrick/RFM95LORA_Breadboard) to make the RFM95 module breadboard/hole matrix board friendly. You can direct download the [Gerberfile](https://github.com/iBrick/RFM95LORA_Breadboard/blob/master/RFM95Breadboard.rar) from the Git repro.
@@ -51,6 +61,8 @@ I have use the [iBrick / RFM95LORA Breadboard](https://github.com/iBrick/RFM95LO
 | DeepSleep | 52 uA |
 
 ### Battery levels overview (Measuring and data send interval every 5 minutes)
+
+The data are still from the use with the 2W solar pannel!
 
 #### No charge current  
 
