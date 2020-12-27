@@ -52,6 +52,8 @@ Therefore, I now use a slightly better one with a glass cover.
 
 I have use the [iBrick / RFM95LORA Breadboard](https://github.com/iBrick/RFM95LORA_Breadboard) to make the RFM95 module breadboard/hole matrix board friendly. You can direct download the [Gerberfile](https://github.com/iBrick/RFM95LORA_Breadboard/blob/master/RFM95Breadboard.rar) from the Git repro.
 
+<img src="img/rfm95_breadboard.jpg">
+
 ## Power consumption
 
 | Mode | Power consumption |
