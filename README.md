@@ -24,6 +24,7 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 * 1x Cable Gland PG7
 * 2x Cable Gland PG11
 * 7x Standoff/Spacer 20 mm
+* Aquarium hose
 * ...
 
 ## Schematic
