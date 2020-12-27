@@ -4,8 +4,6 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 
 <img src="img/case_open.jpg">
 
-> ❗❗❗ Project is still under development / documents are not complete ❗❗❗
-
 ## Components / BOM
 
 * 1x WROOM32 module
