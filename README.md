@@ -125,11 +125,12 @@ function Decoder(bytes, port) {
 
 ## 3D Printing
 
-### Sensor mounting
+### PCB and SDS011 mounting
 
 The STL and Fusion 360 Archive files are included in the 3D folder
 
 <img src="img/sensor_mounting.jpg">
+<img src="img/sensor_mounting_case.jpg">
 
 ### Stevenson Screen
 
