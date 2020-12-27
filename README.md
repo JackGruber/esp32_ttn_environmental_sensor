@@ -1,6 +1,6 @@
 # ESP32 battery/solar powerd environmental sensor
 
-Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature, humidity, air pressure and fine dust.
+Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature, humidity, air pressure, fine dust, UV and LUX.
 
 <img src="img/case_open.jpg">
 
