@@ -4,6 +4,18 @@ Battery/solar-powered ESP32 TTN (LoraWAN) sensor node for measuring temperature,
 
 <img src="img/case_open.jpg">
 
+The microcontroller is an ESP32, but I don't use a ready-made module, because they need too much power even in DeepSleep. Instead I use a WROOM32 module.
+
+The following sensors are used: SDS011 (Fine dust),  BME280 (Temperature / Humidity / Air pressure), VEML6075 (UV Index) and TSL2591 (LUX).
+
+For power supply a 18650 battery is used, which is charged via solar pannel and TP4056. Since the ESP32 and the sensors require 3.3 V, the MCP1700-3302E voltage regulator is used, because the a full loaded 18650 provieds 4.2V and the ESP32 is only rated for 3.0 V~3.6 V. Only the SD011 needs 5V, these are generated with a step-up converter.
+
+Since the SDS011 also needs too much current during the DeepSleep phases of the ESP32, it is switched on and off by N-channel MOSFET (IRL3103PBF).
+
+Every 5 minutes the measurements are sent via LoRaWAN. I retrieve the values via MQTT and Telegraf and visualize them in a Grafana dashboard.
+
+The whole thing was then installed in a weatherproof housing, the cables and the AAA are led down by Cable Glands to the outside to keep the housing as waterproof as possible. Only the BME280 was mounted outside in a Stevenson Screen.
+
 ## Components / BOM
 
 * 1x WROOM32 module
