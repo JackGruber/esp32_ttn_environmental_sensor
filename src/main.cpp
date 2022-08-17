@@ -34,14 +34,14 @@ void setup()
     Wire.begin();
     I2CScanner();
 
-    if( ReadVBat() < 3300)
+    if (ReadVBat() < 3300)
     {
         Serial.println("Goto DeepSleep (VBat to low)");
         PowerDeepSleepTimer(LORA_TX_INTERVAL);
     }
 
     // Setup BME280 and print values
-    if(I2CCheckAddress(0x76))
+    if (I2CCheckAddress(0x76))
     {
         BME280Setup();
         BME280PrintValues();
@@ -52,7 +52,7 @@ void setup()
     }
 
     // Setup VEML6075
-    if(I2CCheckAddress(0x10))
+    if (I2CCheckAddress(0x10))
     {
         VEML6075Setup();
         VEML6075GetUVI();
