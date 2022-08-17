@@ -17,7 +17,7 @@
 void setup()
 {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // Disable Brownout Detector
-
+    setCpuFrequencyMhz(10);
     Serial.begin(115200);
     Serial.println(F("Starting environment sensor ..."));
     Serial.println("Sketch: " VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH "." BUILD_COMMIT "-" BUILD_BRANCH);
@@ -25,7 +25,6 @@ void setup()
     LoraWANPrintVersion();
     PrintResetReason();
 
-    setCpuFrequencyMhz(10);
     Serial.print("CPU Speed: ");
     Serial.print(getCpuFrequencyMhz());
     Serial.println(" MHz");
