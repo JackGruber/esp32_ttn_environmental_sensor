@@ -94,44 +94,48 @@ The data are still from the use with the 2W solar pannel!
 ## TTN payload decoder
 
 ```javascript
-function Decoder(bytes, port) {
+function decodeUplink(input) {
   var decoded = {};
   
-  decoded.vcc = (bytes[0] + 200)/100;
+  decoded.vcc = (input.bytes[0] + 200)/100;
 
-  if(bytes[1] != 255 || bytes[2] != 255)
+  if(input.bytes[1] != 255 || input.bytes[2] != 255)
   {
-    decoded.pm25 = ((bytes[1] << (8*1) | bytes[2] << (8*0)) / 10);
+    decoded.pm25 = ((input.bytes[1] << (8*1) | input.bytes[2] << (8*0)) / 10);
   }
 
-  if(bytes[3] != 255 || bytes[4] != 255)
+  if(input.bytes[3] != 255 || input.bytes[4] != 255)
   {
-    decoded.pm10 = ((bytes[3] << (8*1) | bytes[4] << (8*0)) / 10);
+    decoded.pm10 = ((input.bytes[3] << (8*1) | input.bytes[4] << (8*0)) / 10);
   }
   
-  if(bytes[5] != 255 || bytes[6] != 255)
+  if(input.bytes[5] != 255 || input.bytes[6] != 255)
   {
-    decoded.temperature = ((bytes[5]<<24>>16 | bytes[6]) / 10);
+    decoded.temperature = ((input.bytes[5]<<24>>16 | input.bytes[6]) / 10);
   }
   
-  if(bytes[7] != 255)
+  if(input.bytes[7] != 255)
   {
-    decoded.humidity = bytes[7];
+    decoded.humidity = input.bytes[7];
     decoded.humidity &= ~(1 << 7);
-    if(bytes[7] >> 7 == 1) { decoded.humidity +=0.5 }
+    if(input.bytes[7] >> 7 == 1) { decoded.humidity +=0.5 }
   }
   
-  pressure = (bytes[8] << (8*0) | bytes[9] << (8*1) | bytes[10]  << (8*2)) / 100;
+  pressure = (input.bytes[8] << (8*0) | input.bytes[9] << (8*1) | input.bytes[10]  << (8*2)) / 100;
   if(pressure >= 300 && pressure <= 1100) { decoded.pressure = pressure }
 
-  if(bytes[11] != 255) decoded.uvi = bytes[11] / 10;
+  if(input.bytes[11] != 255) decoded.uvi = input.bytes[11] / 10;
 
-  if(bytes[14] != 255)
+  if(input.bytes[14] != 255)
   {
-    decoded.lux = (bytes[12] << (8*0) | bytes[13] << (8*1) | bytes[14]  << (8*2)) / 100;
+    decoded.lux = (input.bytes[12] << (8*0) | input.bytes[13] << (8*1) | input.bytes[14]  << (8*2)) / 100;
   }
   
-  return decoded;
+  return {
+    data: decoded,
+    warnings: [],
+    errors: []
+  };
 }
 ```
 
